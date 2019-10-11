@@ -1,0 +1,9 @@
+/.idea/
+/frame-cms/target/
+/frame-common/target/
+/frame-domain/target/
+/frame-dao/target/
+/frame-web/target/
+*.log
+rebel.xml
+*.iml
