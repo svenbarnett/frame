@@ -6,3 +6,9 @@ server:
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    cache: false
+    encoding: utf-8
+    mode: HTML
+    prefix: classpath:/templates/
+    suffix: .html
