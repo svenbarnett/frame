@@ -1,0 +1,11 @@
+# 开发环境配置
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    username: root
+    password: root12345
+    url: jdbc:mysql://127.0.0.1:3306/deepblue?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
