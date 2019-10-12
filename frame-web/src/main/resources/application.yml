@@ -12,3 +12,6 @@ spring:
     mode: HTML
     prefix: classpath:/templates/
     suffix: .html
+mybatis:
+  mapper-locations: mapper/*.xml
+  type-aliases-package: com.deepblue777.frame.domain
