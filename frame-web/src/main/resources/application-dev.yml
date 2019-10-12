@@ -6,6 +6,7 @@ spring:
       ddl-auto: create
   datasource:
     username: root
-    password: root12345
-    url: jdbc:mysql://127.0.0.1:3306/deepblue?characterEncoding=utf8&useSSL=false
+    password: Gepoint
+    url: jdbc:mysql://127.0.0.1:3306/frame?characterEncoding=utf8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource

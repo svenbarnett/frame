@@ -11,5 +11,11 @@
 
     <artifactId>frame-common</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.deepblue777</groupId>
+            <artifactId>frame-dao</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
