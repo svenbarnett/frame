@@ -1,6 +1,7 @@
 package com.deepblue777.frame.mapper;
 
 import com.deepblue777.frame.domain.FrameUser;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -10,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @date 2019/10/12 12:37
  * @since 1.0
  */
+@Mapper
 public interface FrameUserMapper {
   FrameUser findByLoginid(@Param("loginid") String loginid);
 }

@@ -31,7 +31,13 @@
     </resultMap>
 
     <select id="findByLoginid" parameterType="string" resultMap="frameUserMap">
-
+        select *
+        from frame_user u
+                 inner join frame_user_role ur on u.uid = ur.uid
+                 inner join frame_role r on ur.rid = r.rid
+                 inner join frame_permission_role pr on r.rid = pr.rid
+                 inner join frame_permission p on pr.rid = p.pid
+        where u.loginid = #{loginid}
     </select>
 
 </mapper>

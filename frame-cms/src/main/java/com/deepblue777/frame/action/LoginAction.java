@@ -14,8 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/login")
 public class LoginAction {
+
+  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  public ModelAndView login(Model model) {
+    model.addAttribute("userList","user");
+    model.addAttribute("title","用户管理");
+    return new ModelAndView("index","userModel",model);
+  }
 
   @RequestMapping(value = "/index", method = RequestMethod.GET)
   public ModelAndView index(Model model) {
