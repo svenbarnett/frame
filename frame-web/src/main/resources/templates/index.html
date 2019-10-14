@@ -1,10 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${userModel.title}"></title>
+    <title></title>
 </head>
 <body>
-
+<!-- 顶部栏 -->
+<div th:replace="common/_header::header"></div>
+<!-- 主内容区 -->   
+<div th:replace="common/_body::body"></div>
+<!-- 底部栏 -->
+<div th:replace="common/_footer::footer"></div>
+<!-- 底部栏 -->
+<div th:replace="common/_sidebar::sidebar"></div>
+</div>
 </body>
 </html>
