@@ -22,11 +22,4 @@ public class LoginAction {
     model.addAttribute("title","用户管理");
     return new ModelAndView("login","userModel",model);
   }
-
-  @RequestMapping(value = "/index", method = RequestMethod.GET)
-  public ModelAndView index(Model model) {
-    model.addAttribute("userList","user");
-    model.addAttribute("title","用户管理");
-    return new ModelAndView("index","userModel",model);
-  }
 }
