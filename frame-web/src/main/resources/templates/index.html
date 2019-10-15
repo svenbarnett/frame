@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>主界面</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/statics/admin/styles/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
 
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
 </head>
@@ -28,11 +28,11 @@
 
     </div>
 </div>
-
 <script th:src="@{/statics/layui/layui.js}"></script>
 <script>
     layui.config({
-        base: '/statics/admin/' //静态资源所在路径
+        debug: true
+        ,base: '/statics/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index');

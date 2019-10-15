@@ -1,4 +1,4 @@
-;layui.define("lib/view", function (e) {
+;layui.define("view", function (e) {
     var a = layui.jquery,
         i = layui.laytpl,
         t = layui.element,
