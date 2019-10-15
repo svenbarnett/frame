@@ -33,7 +33,8 @@ public class ShiroConfig {
     LinkedHashMap<String, String> filterDefinitionMap = new LinkedHashMap<>();
     filterDefinitionMap.put("/index", "anon");
     filterDefinitionMap.put("/login", "anon");
-    filterDefinitionMap.put("/**", "authc");
+    filterDefinitionMap.put("/statics/**", "anon");
+    filterDefinitionMap.put("/**", "anon");
     shiroFilterFactoryBean.setFilterChainDefinitionMap(filterDefinitionMap);
 
     return shiroFilterFactoryBean;

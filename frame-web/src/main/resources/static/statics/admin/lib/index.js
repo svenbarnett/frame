@@ -1,5 +1,4 @@
-/** layuiAdmin.std-v1.2.1 LPPL License By http://www.layui.com/admin/ */ ;
-layui.extend({
+;layui.extend({
     setter: "config",
     admin: "lib/admin",
     view: "lib/view"
@@ -16,7 +15,7 @@ layui.extend({
                 var i = r(this),
                     n = i.attr("lay-id");
                 n === a && (l = !0, t.index = e)
-            }), d = d || "鏂版爣绛鹃〉", e.pageTabs) l || (r(s).append([
+            }), d = d || "新标签页", e.pageTabs) l || (r(s).append([
                 '<div class="layadmin-tabsbody-item layui-show">', '<iframe src="' + a +
                 '" frameborder="0" class="layadmin-iframe"></iframe>', "</div>"].join("")), t.index = b
                 .length, i.tabAdd(o, {
