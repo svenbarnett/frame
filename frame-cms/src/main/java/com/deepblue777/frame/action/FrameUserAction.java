@@ -6,33 +6,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 控制台控制器
+ * 框架用户管理控制器
  *
  * @author pswen/3197544360@qq.com
- * @date 2019/10/15 12:29
+ * @date 2019/10/15 15:19
  * @since 1.0
  */
 @RestController
-public class ConsoleAction {
+@RequestMapping("/frame")
+public class FrameUserAction {
 
-  @GetMapping("/")
-  public ModelAndView index0() {
+  @GetMapping("/user/list")
+  public ModelAndView list() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName("redirect:index");
+    mv.setViewName("frame/user/list");
     return mv;
   }
-
-  @GetMapping("/index")
-  public ModelAndView index() {
+  @GetMapping("/user/add")
+  public ModelAndView add() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName("index");
-    return mv;
-  }
-
-  @GetMapping("/frame/console")
-  public ModelAndView console() {
-    ModelAndView mv = new ModelAndView();
-    mv.setViewName("frame/console");
+    mv.setViewName("frame/user/add");
     return mv;
   }
 }
