@@ -1,7 +1,6 @@
 package com.deepblue777.frame.action;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -33,6 +32,13 @@ public class ConsoleAction {
   public ModelAndView console() {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("frame/console");
+    return mv;
+  }
+
+  @GetMapping("/unauthorized")
+  public ModelAndView unauthorized() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("unauthorized");
     return mv;
   }
 }

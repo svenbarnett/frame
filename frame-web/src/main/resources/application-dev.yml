@@ -1,4 +1,7 @@
 # 开发环境配置
+logging:
+  level:
+    com.deepblue777.frame: debug
 spring:
   datasource:
     username: root

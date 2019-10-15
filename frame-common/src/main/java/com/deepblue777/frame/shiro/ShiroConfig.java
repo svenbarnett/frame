@@ -31,10 +31,10 @@ public class ShiroConfig {
     shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
 
     LinkedHashMap<String, String> filterDefinitionMap = new LinkedHashMap<>();
-    filterDefinitionMap.put("/index", "anon");
     filterDefinitionMap.put("/login", "anon");
+    filterDefinitionMap.put("/frame/user/doLogin", "anon");
     filterDefinitionMap.put("/statics/**", "anon");
-    filterDefinitionMap.put("/**", "anon");
+    filterDefinitionMap.put("/**", "authc");
     shiroFilterFactoryBean.setFilterChainDefinitionMap(filterDefinitionMap);
 
     return shiroFilterFactoryBean;
