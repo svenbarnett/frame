@@ -1,17 +1,97 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-
-    <title>子页title</title>
-</head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/login.css}" media="all">
 <body>
+<div class="layadmin-user-login layadmin-user-display-show" id="LAY-user-login" style="display: none;">
 
-<div layout:fragment="content" style="width:100%;">
-    <div>
-        子页内容测试方当时阿佛的算法打分大师发的发
+    <div class="layadmin-user-login-main">
+        <div class="layadmin-user-login-box layadmin-user-login-header">
+            <h2>DeepBlue</h2>
+            <p>后台管理系统</p>
+        </div>
+        <div class="layadmin-user-login-box layadmin-user-login-body layui-form">
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-username" for="LAY-user-login-username"></label>
+                <input type="text" name="username" id="LAY-user-login-username" lay-verify="required" placeholder="用户名" class="layui-input">
+            </div>
+            <div class="layui-form-item">
+                <label class="layadmin-user-login-icon layui-icon layui-icon-password" for="LAY-user-login-password"></label>
+                <input type="password" name="password" id="LAY-user-login-password" lay-verify="required" placeholder="密码" class="layui-input">
+            </div>
+
+            <div class="layui-form-item">
+                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="LAY-user-login-submit">登 入</button>
+            </div>
+
+        </div>
     </div>
+
+    <div class="layui-trans layadmin-user-login-footer">
+        <p>© 2019</p>
+    </div>
+
 </div>
+<script th:src="@{/statics/layui/layui.js}"></script>
+<script th:inline="none">
+    layui.config({
+        base: '/statics/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'user'], function(){
+        var $ = layui.$
+            ,setter = layui.setter
+            ,admin = layui.admin
+            ,form = layui.form
+            ,router = layui.router()
+            ,search = router.search;
+
+        form.render();
+
+        //提交
+        form.on('submit(LAY-user-login-submit)', function(obj){
+
+            //请求登入接口
+            admin.req({
+                url: layui.setter.base + 'json/user/login.js' //实际使用请改成服务端真实接口
+                ,data: obj.field
+                ,done: function(res){
+
+                    //请求成功后，写入 access_token
+                    layui.data(setter.tableName, {
+                        key: setter.request.tokenName
+                        ,value: res.data.access_token
+                    });
+
+                    //登入成功的提示与跳转
+                    layer.msg('登入成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                    }, function(){
+                        location.href = '../'; //后台主页
+                    });
+                }
+            });
+
+        });
+
+
+        //实际使用时记得删除该代码
+        layer.msg('为了方便演示，用户名密码可随意输入', {
+            offset: '15px'
+            ,icon: 1
+        });
+
+    });
+</script>
 
 </body>
 </html>
