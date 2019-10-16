@@ -1,8 +1,11 @@
 package com.deepblue777.frame.action;
 
 import com.alibaba.fastjson.JSON;
+import com.deepblue777.frame.domain.FrameUser;
+import com.deepblue777.frame.service.FrameUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,7 +22,10 @@ import java.util.HashMap;
 @RequestMapping("/frame")
 public class FrameUserAction {
 
-  Logger logger = LoggerFactory.getLogger(FrameUserAction.class);
+  private final static Logger logger = LoggerFactory.getLogger(FrameUserAction.class);
+
+  @Autowired
+  private FrameUserService frameUserService;
 
   @GetMapping("/user/list")
   public ModelAndView list() {
@@ -39,6 +45,8 @@ public class FrameUserAction {
   @RequestMapping(value = "/user/doLogin", method = RequestMethod.POST)
   public String doLogin(@RequestParam("loginid") String loginid, @RequestParam("password") String password) {
     logger.debug("登录loginid为：{}", loginid);
+    FrameUser user = frameUserService.findByLoginid(loginid);
+    System.out.println(user);
     return JSON.toJSONString(new HashMap<>());
   }
 

@@ -1,9 +1,8 @@
 package com.deepblue777.frame;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * 框架主应用文件入口
@@ -15,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.deepblue777.frame.mapper"})
+//使用tkmapper的扫描组件
 public class App {
   public static void main(String[] args) {
     SpringApplication.run(App.class, args);
