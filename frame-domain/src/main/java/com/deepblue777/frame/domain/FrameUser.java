@@ -16,15 +16,21 @@ import java.util.Set;
 @Data
 public class FrameUser {
 
-  private Integer uid;
-
-  private String username;
+  private Integer id;
 
   private String loginid;
 
+  private String username;
+
   private String password;
 
+  private String contacts;
+
+  private String mobile;
+
   private Integer gender;
+
+  private String email;
 
   private Integer status;
 
@@ -35,4 +41,6 @@ public class FrameUser {
   private Date deleteTime;
 
   private Set<FrameRole> roles = new HashSet<>();
+
+  private String updater;
 }

@@ -4,7 +4,9 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;
 import org.apache.shiro.web.servlet.AbstractShiroFilter;
+import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -14,10 +16,16 @@ import java.util.Map;
  * @date 2019/10/18 11:00
  * @since 1.0
  */
+@Service
 public class FrameShiroServiceImpl implements FrameShiroSerivce {
   @Override
   public Map<String, String> loadFilterChainDefinitions() {
-    return null;
+    LinkedHashMap<String, String> filterDefinitionMap = new LinkedHashMap<>();
+    filterDefinitionMap.put("/login", "anon");
+    filterDefinitionMap.put("/frame/user/doLogin", "anon");
+    filterDefinitionMap.put("/statics/**", "anon");
+    filterDefinitionMap.put("/**", "authc");
+    return filterDefinitionMap;
   }
 
   @Override

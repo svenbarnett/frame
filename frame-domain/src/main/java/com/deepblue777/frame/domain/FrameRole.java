@@ -15,9 +15,15 @@ import java.util.Set;
  */
 @Data
 public class FrameRole {
-  private Integer rid;
+  private Integer id;
 
   private String roleName;
+
+  private Integer status;
+
+  private String creator;
+
+  private String updater;
 
   private Date createTime;
 

@@ -13,11 +13,19 @@ import java.util.Date;
  */
 @Data
 public class FramePermission {
-  private Integer pid;
+  private Integer id;
 
   private String permissionName;
 
-  private String url;
+  private String uri;
+
+  private Integer pid;
+
+  private String type;
+
+  private String creator;
+
+  private String updater;
 
   private Date createTime;
 

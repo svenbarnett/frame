@@ -4,25 +4,36 @@
 <mapper namespace="com.deepblue777.frame.mapper.FrameUserMapper">
 
     <resultMap id="frameUserMap" type="com.deepblue777.frame.domain.FrameUser">
-        <id property="uid" column="uid"/>
-        <result property="username" column="username"/>
+        <id property="id" column="id"/>
         <result property="loginid" column="loginid"/>
+        <result property="username" column="username"/>
         <result property="password" column="password"/>
+        <result property="contacts" column="contacts"/>
+        <result property="mobile" column="mobile"/>
         <result property="gender" column="gender"/>
+        <result property="email" column="email"/>
         <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="deleteTime" column="delete_time"/>
+        <result property="updater" column="updater"/>
         <collection property="roles" ofType="com.deepblue777.frame.domain.FrameRole">
-            <id property="rid" column="rid"/>
+            <id property="id" column="id"/>
             <result property="roleName" column="role_name"/>
+            <result property="status" column="status"/>
+            <result property="creator" column="reator"/>
+            <result property="updater" column="updater"/>
             <result property="createTime" column="create_time"/>
             <result property="updateTime" column="update_time"/>
             <result property="deleteTime" column="delete_time"/>
             <collection property="permissions" ofType="com.deepblue777.frame.domain.FramePermission">
-                <id property="pid" column="pid"/>
+                <id property="id" column="id"/>
                 <result property="permissionName" column="permission_name"/>
-                <result property="url" column="url"/>
+                <result property="uri" column="uri"/>
+                <result property="pid" column="pid"/>
+                <result property="type" column="type"/>
+                <result property="creator" column="creator"/>
+                <result property="updater" column="updater"/>
                 <result property="createTime" column="create_time"/>
                 <result property="updateTime" column="update_time"/>
                 <result property="deleteTime" column="delete_time"/>
@@ -33,9 +44,9 @@
     <select id="findByLoginid" parameterType="string" resultMap="frameUserMap">
         select *
         from frame_user u
-                 inner join frame_user_role ur on u.uid = ur.uid
-                 inner join frame_role r on ur.rid = r.rid
-                 inner join frame_permission_role pr on r.rid = pr.rid
+                 inner join frame_user_role ur on u.id = ur.uid
+                 inner join frame_role r on ur.rid = r.id
+                 inner join frame_role_permission pr on r.id = pr.rid
                  inner join frame_permission p on pr.rid = p.pid
         where u.loginid = #{loginid}
     </select>
