@@ -1,5 +1,8 @@
 package com.deepblue777.frame.action;
 
+import com.deepblue777.frame.domain.FrameUser;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +34,10 @@ public class ConsoleAction {
 
   @GetMapping("/frame/index")
   public ModelAndView index() {
+    Subject subject = SecurityUtils.getSubject();
+    FrameUser user = (FrameUser) subject.getPrincipals().getPrimaryPrincipal();
     ModelAndView mv = new ModelAndView();
+    mv.addObject("user", user);
     mv.setViewName("index");
     return mv;
   }

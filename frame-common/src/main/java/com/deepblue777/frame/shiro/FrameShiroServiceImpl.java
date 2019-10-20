@@ -49,14 +49,14 @@ public class FrameShiroServiceImpl implements FrameShiroSerivce {
           roleList.add(role.getRoleName());
         }
         String join = StringUtils.join(roleList, ",");
-        filterChainDefinitionMap.put(permission.getUri(), "roles[" + join + "]");
+        filterChainDefinitionMap.put("/**/" + permission.getUri(), "roles[" + join + "]");
       }
     }
-    filterDefinitionMap.put("/frame/login", "anon");
-    filterDefinitionMap.put("/frame/user/doLogin", "anon");
-    filterDefinitionMap.put("/statics/**", "anon");
-    filterDefinitionMap.put("/front/**", "anon");
-    filterDefinitionMap.put("/api/**", "anon");
+    filterDefinitionMap.put("/**/frame/login", "anon");
+    filterDefinitionMap.put("/**/frame/user/doLogin", "anon");
+    filterDefinitionMap.put("/**/statics/**", "anon");
+    filterDefinitionMap.put("/**/front/**", "anon");
+    filterDefinitionMap.put("/**/api/**", "anon");
     filterDefinitionMap.put("/**", "authc");
     // 获取数据库的权限
     LOGGER.debug("本次获取数据库权限为：{}", filterChainDefinitionMap.toString());

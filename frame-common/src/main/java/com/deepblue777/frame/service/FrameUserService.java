@@ -15,5 +15,5 @@ public interface FrameUserService {
 
   BaseResponse doLogin(String loginid, String password);
 
-  void logout();
+  BaseResponse logout();
 }

@@ -1,6 +1,5 @@
 package com.deepblue777.frame.shiro;
 
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -37,7 +36,8 @@ public class ShiroConfig {
   private static final String VALUE = "/";
 
   @Bean("shiroFilter")
-  public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager, @Qualifier("frameShiroSerivce") FrameShiroSerivce frameShiroSerivce) {
+  public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager,
+                                            @Qualifier("frameShiroSerivce") FrameShiroSerivce frameShiroSerivce) {
     ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
     shiroFilterFactoryBean.setSecurityManager(securityManager);
 

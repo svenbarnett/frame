@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * @description: 全局异常处理类
- * @author: HYY
- * @date: 2019/9/6
- * @since
+ * 全局异常处理类
  */
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {

@@ -6,15 +6,12 @@ import com.deepblue777.frame.mapper.FrameUserMapper;
 import com.deepblue777.frame.service.FrameUserService;
 import com.deepblue777.frame.shiro.FrameShiroSerivce;
 import com.deepblue777.frame.utils.MD5Util;
-import com.deepblue777.frame.utils.SpringUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -31,11 +28,10 @@ public class FrameUserServiceImpl implements FrameUserService {
 
   private final static Logger LOGGER = LoggerFactory.getLogger(FrameUserServiceImpl.class);
 
-
   @Resource
   private FrameUserMapper frameUserMapper;
 
-  @Autowired
+  @Resource
   private FrameShiroSerivce frameShiroService;
 
   @Override
@@ -45,6 +41,7 @@ public class FrameUserServiceImpl implements FrameUserService {
 
   @Override
   public BaseResponse doLogin(String loginid, String password) {
+    LOGGER.debug("#### 当前登录用户：{}", loginid);
     Subject subject = SecurityUtils.getSubject();
     UsernamePasswordToken token = new UsernamePasswordToken(loginid, MD5Util.ecrypt(password));
     try {
@@ -61,15 +58,16 @@ public class FrameUserServiceImpl implements FrameUserService {
       return new BaseResponse(500, "未知错误");
     }
     FrameUser user = (FrameUser) subject.getPrincipal();
-    return new BaseResponse<>(user);
+    return new BaseResponse<>(1,"登录成功！");
   }
 
   @Override
-  public void logout() {
+  public BaseResponse logout() {
     Subject subject = SecurityUtils.getSubject();
+    FrameUser user = (FrameUser) subject.getPrincipals().getPrimaryPrincipal();
+    LOGGER.debug("#### 当前登出用户：{}", user.getLoginid());
     subject.logout();
-    ShiroFilterFactoryBean shiroFilter = (ShiroFilterFactoryBean) SpringUtil.getBean("shiroFilter");
-    frameShiroService.updatePermission(shiroFilter);
+    return new BaseResponse<>(1, "登出成功！");
   }
 }
 

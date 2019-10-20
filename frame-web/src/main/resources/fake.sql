@@ -10,39 +10,40 @@ values (1, 'admin', 1);
 insert into `frame_role`(`id`, `role_name`, `status`)
 values (2, '普通用户', 1);
 
+delete from frame_permission where 1=1;
 
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
 values (1, '用户管理', '', null, '');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
 values (2, '角色管理', '', null, '');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (3, '查询（分页）', '/role/page', 2, null);
+values (3, '查询（分页）', 'role/page', 2, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (4, '新增', '/user/add', 1, null);
+values (4, '新增', 'user/add', 1, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (5, '删除', '/user/delete', 1, null);
+values (5, '删除', 'user/delete', 1, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (6, '修改', '/user/update', 1, null);
+values (6, '修改', 'user/update', 1, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (7, '查询', '/user/page', 1, null);
+values (7, '查询', 'user/page', 1, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (8, '查询', '/role/list', 2, null);
+values (8, '查询', 'role/list', 2, null);
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (9, '权限列表', '/permission/list', 2, '');
+values (9, '权限列表', 'permission/list', 2, '');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (10, '新增', '/role/add', 2, 'button');
+values (10, '新增', 'role/add', 2, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (11, '启用/禁用', '/role/updatestatus', 2, 'button');
+values (11, '启用/禁用', 'role/updatestatus', 2, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (12, '删除', '/role/delete', 2, 'button');
+values (12, '删除', 'role/delete', 2, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (13, '详情', '/role/detail', 2, 'button');
+values (13, '详情', 'role/detail', 2, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (14, '修改', '/role/update', 2, 'button');
+values (14, '修改', 'role/update', 2, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (15, '启用/禁用', '/user/updatestatus', 1, 'button');
+values (15, '启用/禁用', 'user/updatestatus', 1, 'button');
 insert into `frame_permission`(`id`, `permission_name`, `uri`, `pid`, `type`)
-values (16, '详情', '/user/detail', 1, 'button');
+values (16, '详情', 'user/detail', 1, 'button');
 
 
 insert into `frame_role_permission`(`rid`, `pid`) values (1, 3);
