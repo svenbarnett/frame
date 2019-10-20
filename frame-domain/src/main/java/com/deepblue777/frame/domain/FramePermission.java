@@ -3,6 +3,7 @@ package com.deepblue777.frame.domain;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Set;
 
 /**
  * 框架权限
@@ -32,4 +33,6 @@ public class FramePermission {
   private Date updateTime;
 
   private Date deleteTime;
+
+  private Set<FrameRole> roles;
 }

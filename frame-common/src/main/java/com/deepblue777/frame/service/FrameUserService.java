@@ -1,5 +1,6 @@
 package com.deepblue777.frame.service;
 
+import com.deepblue777.frame.common.BaseResponse;
 import com.deepblue777.frame.domain.FrameUser;
 
 /**
@@ -11,4 +12,8 @@ import com.deepblue777.frame.domain.FrameUser;
  */
 public interface FrameUserService {
   FrameUser findByLoginid(String loginid);
+
+  BaseResponse doLogin(String loginid, String password);
+
+  void logout();
 }

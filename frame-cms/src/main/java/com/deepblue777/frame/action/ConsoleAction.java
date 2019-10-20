@@ -17,11 +17,19 @@ public class ConsoleAction {
   @GetMapping("/")
   public ModelAndView index0() {
     ModelAndView mv = new ModelAndView();
-    mv.setViewName("redirect:index");
+    mv.setViewName("redirect:/frame/index");
     return mv;
   }
 
-  @GetMapping("/index")
+
+  @GetMapping("/frame")
+  public ModelAndView index1() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("redirect:/frame/index");
+    return mv;
+  }
+
+  @GetMapping("/frame/index")
   public ModelAndView index() {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("index");
@@ -35,7 +43,7 @@ public class ConsoleAction {
     return mv;
   }
 
-  @GetMapping("/unauthorized")
+  @GetMapping("/frame/unauthorized")
   public ModelAndView unauthorized() {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("unauthorized");

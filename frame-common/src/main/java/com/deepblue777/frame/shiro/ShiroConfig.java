@@ -1,5 +1,6 @@
 package com.deepblue777.frame.shiro;
 
+import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -36,7 +37,7 @@ public class ShiroConfig {
   private static final String VALUE = "/";
 
   @Bean("shiroFilter")
-  public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager, @Qualifier("frameShiroServiceImpl") FrameShiroSerivce frameShiroSerivce) {
+  public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager, @Qualifier("frameShiroSerivce") FrameShiroSerivce frameShiroSerivce) {
     ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
     shiroFilterFactoryBean.setSecurityManager(securityManager);
 
@@ -45,9 +46,9 @@ public class ShiroConfig {
     filterMap.put("roles", rolesAuthorizationFilter());
     shiroFilterFactoryBean.setFilters(filterMap);
 
-    shiroFilterFactoryBean.setLoginUrl("/login");
-    shiroFilterFactoryBean.setSuccessUrl("/index");
-    shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
+    shiroFilterFactoryBean.setLoginUrl("/frame/login");
+    shiroFilterFactoryBean.setSuccessUrl("/frame/index");
+    shiroFilterFactoryBean.setUnauthorizedUrl("/frame/unauthorized");
     // 加载数据库的相关权限路由控制
     shiroFilterFactoryBean.setFilterChainDefinitionMap(frameShiroSerivce.loadFilterChainDefinitions());
     return shiroFilterFactoryBean;
@@ -66,16 +67,9 @@ public class ShiroConfig {
   }
 
   @Bean("authRealm")
-  public AuthRealm authRealm(@Qualifier("credentialsMatcher") CredentialsMatcher credentialsMatcher) {
+  public AuthRealm authRealm() {
     AuthRealm authRealm = new AuthRealm();
-    authRealm.setCredentialsMatcher(credentialsMatcher);
     return authRealm;
-  }
-
-
-  @Bean("credentialsMatcher")
-  public CredentialsMatcher credentialsMatcher() {
-    return new CredentialsMatcher();
   }
 
 

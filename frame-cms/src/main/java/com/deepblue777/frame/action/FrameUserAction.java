@@ -1,18 +1,15 @@
 package com.deepblue777.frame.action;
 
 import com.alibaba.fastjson.JSON;
-import com.deepblue777.frame.domain.FrameUser;
+import com.deepblue777.frame.common.BaseResponse;
 import com.deepblue777.frame.service.FrameUserService;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.HashMap;
 
 /**
  * 框架用户管理控制器
@@ -45,16 +42,26 @@ public class FrameUserAction {
     return mv;
   }
 
-  @RequestMapping(value = "/user/doLogin", method = RequestMethod.POST)
-  public String doLogin(@RequestParam("loginid") String loginid, @RequestParam("password") String password, Subject subject1) {
-    logger.debug("登录loginid为：{}", loginid);
-    FrameUser user = frameUserService.findByLoginid(loginid);
-    System.out.println(user);
+  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  public ModelAndView login() {
     Subject subject = SecurityUtils.getSubject();
-
-    UsernamePasswordToken token = new UsernamePasswordToken(loginid, "11111", "spring-boot-shiro");
-    subject.login(token);
-    return JSON.toJSONString(new HashMap<>());
+    boolean authenticated = subject.isAuthenticated();
+    if (authenticated) {
+      return new ModelAndView("redirect:../frame/index");
+    }
+    return new ModelAndView("login");
   }
 
+  @RequestMapping(value = "/user/doLogin", method = RequestMethod.POST)
+  public String doLogin(@RequestParam("loginid") String loginid, @RequestParam("password") String password) {
+    logger.debug("登录loginid为：{}", loginid);
+    frameUserService.doLogin(loginid, password);
+    return JSON.toJSONString(new BaseResponse<>(1, "登录成功！"));
+  }
+
+  @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
+  public String logout() {
+    frameUserService.logout();
+    return JSON.toJSONString(new BaseResponse<>(1, "登出成功！"));
+  }
 }
