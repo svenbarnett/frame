@@ -2,6 +2,10 @@ package com.deepblue777.frame.service;
 
 import com.deepblue777.frame.common.BaseResponse;
 import com.deepblue777.frame.domain.FrameUser;
+import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 一句话简单描述
@@ -16,4 +20,10 @@ public interface FrameUserService {
   BaseResponse doLogin(String loginid, String password);
 
   BaseResponse logout();
+
+  List<FrameUser> findByMaps(Map map);
+
+  int findCountByMaps(Map map);
+
+  Mapper<FrameUser> getMapper();
 }

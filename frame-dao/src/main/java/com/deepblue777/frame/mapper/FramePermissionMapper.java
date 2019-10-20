@@ -1,7 +1,7 @@
 package com.deepblue777.frame.mapper;
 
 import com.deepblue777.frame.domain.FramePermission;
-import org.apache.ibatis.annotations.Mapper;
+import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
@@ -12,7 +12,6 @@ import java.util.List;
  * @date 2019/10/20 11:16
  * @since 1.0
  */
-@Mapper
-public interface FramePermissionMapper {
+public interface FramePermissionMapper extends Mapper<FramePermission> {
   List<FramePermission> findAllPermissions();
 }

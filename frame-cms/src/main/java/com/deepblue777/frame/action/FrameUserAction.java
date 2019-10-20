@@ -1,14 +1,17 @@
 package com.deepblue777.frame.action;
 
 import com.alibaba.fastjson.JSON;
+import com.deepblue777.frame.domain.FrameUser;
 import com.deepblue777.frame.service.FrameUserService;
+import com.deepblue777.frame.vo.TableVO;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 框架用户管理控制器
@@ -31,10 +34,25 @@ public class FrameUserAction {
     return mv;
   }
 
+  @PostMapping("/user/table")
+  public String table(@RequestBody Map map) {
+    int count = frameUserService.findCountByMaps(map);
+    List<FrameUser> users;
+    users = frameUserService.findByMaps(map);
+    return JSON.toJSONString(new TableVO<>(0, "操作成功!", count, users));
+  }
+
   @GetMapping("/user/add")
   public ModelAndView add() {
     ModelAndView mv = new ModelAndView();
     mv.setViewName("frame/user/add");
+    return mv;
+  }
+
+  @GetMapping("/user/edit")
+  public ModelAndView edit() {
+    ModelAndView mv = new ModelAndView();
+    mv.setViewName("frame/user/edit");
     return mv;
   }
 

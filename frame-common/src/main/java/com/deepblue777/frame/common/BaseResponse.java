@@ -3,7 +3,7 @@ package com.deepblue777.frame.common;
 public class BaseResponse<T> {
   private int code = 1;
   private String msg = "SUCCESS";
-  protected T result;
+  protected T data;
 
   public BaseResponse() {
   }
@@ -13,13 +13,13 @@ public class BaseResponse<T> {
     this.msg = msg;
   }
 
-  public BaseResponse(int code, String msg, T result) {
+  public BaseResponse(int code, String msg, T data) {
     this(code, msg);
-    this.result = result;
+    this.data = data;
   }
 
-  public BaseResponse(T result) {
-    this.result = result;
+  public BaseResponse(T data) {
+    this.data = data;
   }
 
   public int getCode() {
@@ -38,11 +38,11 @@ public class BaseResponse<T> {
     this.msg = msg;
   }
 
-  public T getResult() {
-    return result;
+  public T getdata() {
+    return data;
   }
 
-  public void setResult(T result) {
-    this.result = result;
+  public void setdata(T data) {
+    this.data = data;
   }
 }
