@@ -1,5 +1,6 @@
 package com.deepblue777.frame.shiro;
 
+import com.deepblue777.frame.dao.FrameUserDAO;
 import com.deepblue777.frame.domain.FramePermission;
 import com.deepblue777.frame.domain.FrameRole;
 import com.deepblue777.frame.domain.FrameUser;

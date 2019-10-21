@@ -15,7 +15,6 @@ import java.util.Map;
  * @since 1.0
  */
 public interface FrameUserService {
-  FrameUser findByLoginid(String loginid);
 
   BaseResponse doLogin(String loginid, String password);
 
@@ -25,5 +24,5 @@ public interface FrameUserService {
 
   int findCountByMaps(Map map);
 
-  Mapper<FrameUser> getMapper();
+  FrameUser findByLoginid(String loginid);
 }
