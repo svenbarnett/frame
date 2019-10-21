@@ -72,14 +72,6 @@ public class ShiroConfig {
     return authRealm;
   }
 
-
-  @Bean
-  public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") SecurityManager securityManager) {
-    AuthorizationAttributeSourceAdvisor advisor = new AuthorizationAttributeSourceAdvisor();
-    advisor.setSecurityManager(securityManager);
-    return advisor;
-  }
-
   @Bean
   public DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator() {
     DefaultAdvisorAutoProxyCreator advisorAutoProxyCreator = new DefaultAdvisorAutoProxyCreator();

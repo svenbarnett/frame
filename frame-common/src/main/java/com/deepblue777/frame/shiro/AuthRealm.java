@@ -1,6 +1,5 @@
 package com.deepblue777.frame.shiro;
 
-import com.deepblue777.frame.dao.FrameUserDAO;
 import com.deepblue777.frame.domain.FramePermission;
 import com.deepblue777.frame.domain.FrameRole;
 import com.deepblue777.frame.domain.FrameUser;
@@ -11,9 +10,11 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,8 @@ import java.util.Set;
  * @since 1.0
  */
 public class AuthRealm extends AuthorizingRealm {
+
+  private final static Logger LOGGER = LoggerFactory.getLogger(AuthRealm.class);
   @Autowired
   private FrameUserService frameUserService;
 
@@ -35,18 +38,23 @@ public class AuthRealm extends AuthorizingRealm {
     FrameUser frameUser = (FrameUser) principalCollection.fromRealm(this.getClass().getName()).iterator().next();
     List<String> permissionList = new LinkedList<>();
     Set<FrameRole> roleSet = frameUser.getRoles();
-    if (CollectionUtils.isNotEmpty(roleSet)){
+    Set<String> roleList = new LinkedHashSet<>();
+    if (CollectionUtils.isNotEmpty(roleSet)) {
       for (FrameRole frameRole : roleSet) {
+        roleList.add(frameRole.getRoleName());
         Set<FramePermission> permissionSet = frameRole.getPermissions();
-        if (CollectionUtils.isNotEmpty(permissionSet)){
+        if (CollectionUtils.isNotEmpty(permissionSet)) {
           for (FramePermission framePermission : permissionSet) {
-            permissionList.add(framePermission.getPermissionName());
+            permissionList.add(frameRole.getRoleName()+":"+framePermission.getPermissionName());
           }
         }
       }
     }
     SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
     info.addStringPermissions(permissionList);
+    LOGGER.debug("#### 当前登录用户具备的资源权限：{}", permissionList.toString());
+    info.addRoles(roleList);
+    LOGGER.debug("#### 当前登录用户具备的角色权限：{}", roleList.toString());
     return info;
   }
 
@@ -56,6 +64,6 @@ public class AuthRealm extends AuthorizingRealm {
     UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
     String loginid = usernamePasswordToken.getUsername();
     FrameUser frameUser = frameUserService.findByLoginid(loginid);
-    return new SimpleAuthenticationInfo(frameUser,frameUser.getPassword(),this.getClass().getName());
+    return new SimpleAuthenticationInfo(frameUser, frameUser.getPassword(), this.getClass().getName());
   }
 }

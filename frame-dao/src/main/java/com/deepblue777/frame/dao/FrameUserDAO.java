@@ -2,6 +2,7 @@ package com.deepblue777.frame.dao;
 
 import com.deepblue777.frame.domain.FrameUser;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +20,8 @@ public interface FrameUserDAO {
   List<FrameUser> findByMaps(Map map);
 
   int findCountByMaps(Map map);
+
+  FrameUser findByID(BigInteger id);
+
+  void update(FrameUser frameUser);
 }

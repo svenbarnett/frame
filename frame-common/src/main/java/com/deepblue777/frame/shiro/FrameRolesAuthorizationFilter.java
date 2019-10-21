@@ -2,6 +2,7 @@ package com.deepblue777.frame.shiro;
 
 import com.alibaba.fastjson.JSON;
 import com.deepblue777.frame.common.BaseResponse;
+import com.deepblue777.frame.common.ResponseCodeMsg;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.RolesAuthorizationFilter;
 import org.springframework.http.HttpMethod;
@@ -61,9 +62,9 @@ public class FrameRolesAuthorizationFilter extends RolesAuthorizationFilter {
     servletResponse.setHeader("Vary", "Origin");
     String respStr;
     if (subject.getPrincipal() == null) {
-      respStr = JSON.toJSONString(new BaseResponse<>(207, "您还未登录，请先登录"));
+      respStr = JSON.toJSONString(new BaseResponse<>(ResponseCodeMsg.NO_LOGIN.getCode(), ResponseCodeMsg.NO_LOGIN.getMsg()));
     } else {
-      respStr = JSON.toJSONString(new BaseResponse<>(403, "您没有此权限，请联系管理员"));
+      respStr = JSON.toJSONString(new BaseResponse<>(ResponseCodeMsg.NO_PERMISSION.getCode(), ResponseCodeMsg.NO_PERMISSION.getMsg()));
     }
     printWriter.write(respStr);
     printWriter.flush();

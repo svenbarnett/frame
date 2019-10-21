@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>模块管理列表</title>
+    <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
+
+    <link rel="stylesheet" th:href="@{/statics/admin/extends/dtree/dtree.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/extends/dtree/font/dtreefont.css}" media="all">
+
+</head>
+
+<body>
+<div class="layui-fluid">
+
+    <div class="layui-card">
+        <!--卡片头区域-->
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <!-- 搜索区域-->
+            <div class="layui-form-item">
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">ID</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="table-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!--卡片body区域-->
+        <div class="layui-card-body">
+            <!--一行-->
+            <div class="layui-row">
+                <!-- 按钮区域-->
+                <div style="padding-bottom: 10px;">
+                    <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button>
+                    <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+                </div>
+            </div>
+
+            <!--一行-->
+            <div class="layui-row">
+                <!-- 左侧树形列-->
+                <div class="layui-col-lg2">
+                    <div style="height: 598px;overflow: auto;border: 1px solid #e6e6e6;">
+                        <ul id="left-tree" class="dtree" data-id="0"></ul>
+                    </div>
+                </div>
+                <!-- 右侧表格列-->
+                <div class="layui-col-lg10">
+                    <table id="table-box" lay-filter="table-box"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script th:src="@{/statics/layui/layui.js}"></script>
+<script th:inline="none">
+    layui.config({
+        base: '../../statics/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+        ,dtree: '../extends/dtree/dtree'
+    }).use(['index', 'table','dtree'], function () {
+        var $ = layui.$
+            , form = layui.form
+            , table = layui.table
+            , dtree = layui.dtree;
+        // 树实例
+        dtree.render({
+            elem: "#left-tree"
+            ,url: "../../statics/admin/json/dtreejson.js"
+            ,method: 'get'
+            ,dataStyle: "layuiStyle",  //使用layui风格的数据格式
+            response:{message:"msg",statusCode:0}  //修改response中返回数据的定义
+        });
+        // 点击节点触发回调，其中obj内包含丰富的数据，打开浏览器F12查看！
+        dtree.on("node('left-tree')" ,function(obj){
+            layer.msg(JSON.stringify(obj.param));
+            console.log(obj.param); // 点击当前节点传递的参数
+            console.log(obj.dom); // 当前节点的jquery对象
+            console.log(obj.childParams); // 当前节点的所有子节点参数
+            console.log(obj.parentParam); // 当前节点的父节点参数
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#table-box'
+            , height: 600
+            , url: '../user/table' //数据接口
+            , method: 'post'
+            , contentType: 'application/json;charset=utf-8'
+            , page: true //开启分页
+            , limit: 20
+            , cols: [[ //表头
+                {checkbox: true}
+                , {field: 'id', title: 'ID', width: 80, sort: true}
+                , {field: 'loginid', title: '登录名'}
+                , {field: 'username', title: '用户名'}
+                , {field: 'contacts', title: '联系人'}
+                , {field: 'mobile', title: '手机号'}
+                , {field: 'gender', title: '性别'}
+                , {field: 'email', title: '邮箱'}
+                , {field: 'status', title: '状态'}
+                , {field: 'createTime', title: '创建时间', sort: true}
+                , {width: 178, align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
+            ]]
+        });
+
+        //监听工具条
+        table.on('tool(table-box)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                edit(data.id);
+            }
+        });
+
+        //监听搜索
+        form.on('submit(table-search)', function (data) {
+            var field = data.field;
+            //执行重载
+            table.reload('table-box', {
+                where: field
+            });
+        });
+
+        //事件
+        var active = {
+            batchdel: function () {
+                del()
+            }
+            , add: function () {
+                add()
+            }
+
+        };
+
+        var del = function (id) {
+            var checkStatus = table.checkStatus('batchdel')
+                , checkData = checkStatus.data; //得到选中的数据
+
+            if (checkData.length === 0) {
+                return layer.msg('请选择数据');
+            }
+
+            layer.prompt({
+                formType: 1
+                , title: '敏感操作，请验证口令'
+            }, function (value, index) {
+                layer.close(index);
+
+                layer.confirm('确定删除吗？', function (index) {
+
+                    //执行 Ajax 后重载
+                    /*
+                    admin.req({
+                      url: 'xxx'
+                      //,……
+                    });
+                    */
+                    table.reload('table-box');
+                    layer.msg('已删除');
+                });
+            })
+        };
+
+        var add = function () {
+            layer.open({
+                type: 2
+                , title: '添加用户'
+                , content: '../user/add'
+                , maxmin: true
+                , area: ['1200px', '800px']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-user-front-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        //$.ajax({});
+                        table.reload('LAY-user-front-submit'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            })
+        };
+
+        var edit = function (id) {
+            layer.open({
+                type: 2
+                , title: '编辑用户'
+                , content: '../user/edit?id=' + id
+                , maxmin: true
+                , area: ['1200px', '800px']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-user-front-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        //$.ajax({});
+                        table.reload('LAY-user-front-submit'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            });
+        };
+
+        $('.layui-btn.layuiadmin-btn-useradmin').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</html>

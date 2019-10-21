@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,16 @@ public class FrameUserDAOImpl implements FrameUserDAO {
   public int findCountByMaps(Map map) {
     Example example = combineExampleByMap(map);
     return frameUserMapper.selectCountByExample(example);
+  }
+
+  @Override
+  public FrameUser findByID(BigInteger id) {
+    return frameUserMapper.selectByPrimaryKey(id);
+  }
+
+  @Override
+  public void update(FrameUser frameUser) {
+    frameUserMapper.updateByPrimaryKeySelective(frameUser);
   }
 
   private Example combineExampleByMap(Map map) {

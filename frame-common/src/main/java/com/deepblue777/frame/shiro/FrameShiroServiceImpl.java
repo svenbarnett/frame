@@ -37,7 +37,6 @@ public class FrameShiroServiceImpl implements FrameShiroSerivce {
     List<FramePermission> permissions = framePermissionService.findAllPermissions();
 
     // 权限控制map.从数据库获取
-    Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
     if (permissions.size() > 0) {
       for (FramePermission permission : permissions) {
         if (permission.getRoles().size() == 0) {
@@ -45,11 +44,14 @@ public class FrameShiroServiceImpl implements FrameShiroSerivce {
         }
         Set<FrameRole> roles = permission.getRoles();
         List<String> roleList = new ArrayList<>();
+        List<String> permList = new ArrayList<>();
         for (FrameRole role : roles) {
           roleList.add(role.getRoleName());
+          permList.add(role.getRoleName() + ":" + permission.getPermissionName());
         }
-        String join = StringUtils.join(roleList, ",");
-        filterChainDefinitionMap.put("/**/" + permission.getUri(), "roles[" + join + "]");
+        String joinRoles = StringUtils.join(roleList, ",");
+        String joinPerms = StringUtils.join(permList, ",");
+        filterDefinitionMap.put("/**/" + permission.getUri(), "authc,roles[" + joinRoles + "],perms[" + joinPerms + "]");
       }
     }
     filterDefinitionMap.put("/**/frame/login", "anon");
@@ -59,7 +61,7 @@ public class FrameShiroServiceImpl implements FrameShiroSerivce {
     filterDefinitionMap.put("/**/api/**", "anon");
     filterDefinitionMap.put("/**", "authc");
     // 获取数据库的权限
-    LOGGER.debug("本次获取数据库权限为：{}", filterChainDefinitionMap.toString());
+    LOGGER.debug("#### 获取数据库资源权限为：{}", filterDefinitionMap.toString());
     return filterDefinitionMap;
   }
 

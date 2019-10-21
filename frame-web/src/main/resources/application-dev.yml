@@ -2,6 +2,7 @@
 logging:
   level:
     com.deepblue777.frame: debug
+    tk.mybatis.mapper: debug
 spring:
   datasource:
     username: root
