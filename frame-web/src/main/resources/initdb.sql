@@ -94,7 +94,7 @@ create table `frame_dept`
   default charset = utf8mb4 comment ='框架部门表';
 
 
--- 框架菜单表 --
+-- 框架模块表 --
 create table `frame_module`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '模块主键',
@@ -110,5 +110,5 @@ create table `frame_module`
     `delete_time` datetime comment '删除时间',
     key idx_pid (`pid`)
 ) engine = innodb
-  default charset = utf8mb4 comment ='框架菜单表';
+  default charset = utf8mb4 comment ='框架模块表';
 

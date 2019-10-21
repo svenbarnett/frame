@@ -1,9 +1,12 @@
 package com.deepblue777.frame.action;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.alibaba.fastjson.JSON;
+import com.deepblue777.frame.service.FrameModuleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 /**
  * 框架模块视图控制器
@@ -15,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/frame/module")
 public class FrameModuleAction {
+
+  @Autowired
+  private FrameModuleService frameModuleService;
 
   @GetMapping("/list")
   public ModelAndView list() {
@@ -32,5 +38,28 @@ public class FrameModuleAction {
   public ModelAndView edit() {
     ModelAndView mv = new ModelAndView("frame/module/edit");
     return mv;
+  }
+
+  @PostMapping("/dtree")
+  public String dtree() {
+    return JSON.toJSONString(frameModuleService.getDtreeList());
+  }
+
+  @PostMapping("/table")
+  public String table(@RequestBody Map map) {
+    Integer pid =0;
+    int page = 0;
+    int limit = 20;
+
+    if (map.get("pid") != null) {
+      pid = Integer.valueOf(map.get("pid").toString());
+    }
+    if (map.get("page") != null) {
+      page = Integer.valueOf(map.get("page").toString());
+    }
+    if (map.get("limit") != null) {
+      limit = Integer.valueOf(map.get("limit").toString());
+    }
+    return JSON.toJSONString(frameModuleService.getTableList(pid, page, limit));
   }
 }

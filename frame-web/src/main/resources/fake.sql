@@ -66,3 +66,13 @@ insert into `frame_role_permission`(`rid`, `pid`) values (2, 8);
 
 insert into `frame_user_role`(`uid`,`rid`) values (1,1);
 insert into `frame_user_role`(`uid`,`rid`) values (2,2);
+
+insert into `frame_module`(`id`,`pid`,`name`)values (1,0,'后台管理');
+insert into `frame_module`(`id`,`pid`,`name`)values (2,1,'模块管理');
+insert into `frame_module`(`id`,`pid`,`name`)values (3,1,'用户管理');
+insert into `frame_module`(`id`,`pid`,`name`)values (4,1,'角色权限管理');
+
+insert into `frame_module`(`id`,`pid`,`name`)values (5,0,'系统设置');
+insert into `frame_module`(`id`,`pid`,`name`)values (6,5,'A设置');
+insert into `frame_module`(`id`,`pid`,`name`)values (7,5,'B设置');
+insert into `frame_module`(`id`,`pid`,`name`)values (8,5,'C设置');

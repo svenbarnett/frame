@@ -1,7 +1,7 @@
 package com.deepblue777.frame.common;
 
 public class BaseResponse<T> {
-  private int code = 1;
+  private int code = 0;
   private String msg = "SUCCESS";
   protected T data;
 
