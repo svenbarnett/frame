@@ -50,4 +50,9 @@ public class FrameModuleServiceImpl implements FrameModuleService {
     }
     return new TableVO<>(0, "操作成功！", count, modules);
   }
+
+  @Override
+  public FrameModule findByID(int id) {
+    return frameModuleDAO.findByID(id);
+  }
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>模块编辑</title>
+    <title>编辑页模板</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
@@ -11,18 +11,10 @@
 <div class="layui-fluid">
     <div class="layui-card">
 
-        <div class="layui-card-header">模块信息</div>
+        <div class="layui-card-header">用户信息</div>
 
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" action="" lay-filter="component-form-group">
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">模块ID</label>
-                    <div class="layui-input-block">
-                        <input type="text" th:value="${module.id}" name="id" lay-verify="required|id" autocomplete="off"
-                               class="layui-input layui-disabled">
-                    </div>
-                </div>
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">登录名</label>
@@ -90,6 +82,7 @@
                     <div class="layui-input-block">
                         <div class="layui-footer" style="left: 0;">
                             <button class="layui-btn" lay-submit="" lay-filter="component-form-demo1">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
                 </div>

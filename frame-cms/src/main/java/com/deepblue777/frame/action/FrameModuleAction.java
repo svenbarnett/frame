@@ -1,6 +1,7 @@
 package com.deepblue777.frame.action;
 
 import com.alibaba.fastjson.JSON;
+import com.deepblue777.frame.domain.FrameModule;
 import com.deepblue777.frame.service.FrameModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,10 @@ public class FrameModuleAction {
   }
 
   @GetMapping("/edit")
-  public ModelAndView edit() {
+  public ModelAndView edit(@RequestParam("id") Integer id) {
     ModelAndView mv = new ModelAndView("frame/module/edit");
+    FrameModule module = frameModuleService.findByID(id);
+    mv.addObject("module", module);
     return mv;
   }
 
@@ -47,7 +50,7 @@ public class FrameModuleAction {
 
   @PostMapping("/table")
   public String table(@RequestBody Map map) {
-    Integer pid =0;
+    Integer pid = 0;
     int page = 0;
     int limit = 20;
 

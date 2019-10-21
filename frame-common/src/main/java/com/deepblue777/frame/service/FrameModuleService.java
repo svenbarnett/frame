@@ -18,4 +18,5 @@ public interface FrameModuleService {
   BaseResponse getDtreeList();
 
   TableVO<List<FrameModule>> getTableList(int pid, int page, int limit);
+  FrameModule findByID(int id);
 }

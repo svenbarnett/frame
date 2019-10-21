@@ -51,6 +51,16 @@
 </div>
 
 </body>
+
+
+<script type="text/html" id="table-toolbar">
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
+            class="layui-icon layui-icon-edit"></i>编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
+            class="layui-icon layui-icon-delete"></i>删除</a>
+</script>
+
+
 <script th:src="@{/statics/layui/layui.js}"></script>
 <script th:inline="none">
     layui.config({
@@ -121,6 +131,19 @@
 
         };
 
+        //监听工具条
+        table.on('tool(table-box)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            } else if (obj.event === 'edit') {
+                edit(data.id);
+            }
+        });
+
         var del = function (id) {
             var checkStatus = table.checkStatus('batchdel')
                 , checkData = checkStatus.data; //得到选中的数据
@@ -153,8 +176,8 @@
         var add = function () {
             layer.open({
                 type: 2
-                , title: '添加用户'
-                , content: '../user/add'
+                , title: '添加模块'
+                , content: '../module/add'
                 , maxmin: true
                 , area: ['1200px', '800px']
                 , yes: function (index, layero) {
@@ -178,7 +201,7 @@
             layer.open({
                 type: 2
                 , title: '编辑用户'
-                , content: '../user/edit?id=' + id
+                , content: '../module/edit?id=' + id
                 , maxmin: true
                 , area: ['1200px', '800px']
                 , yes: function (index, layero) {

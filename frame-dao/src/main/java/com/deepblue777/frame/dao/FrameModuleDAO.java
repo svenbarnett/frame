@@ -24,4 +24,6 @@ public interface FrameModuleDAO {
   int findCountByPid(int pid);
 
   int findCount();
+
+  FrameModule findByID(int id);
 }

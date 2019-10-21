@@ -77,4 +77,9 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
     Example.Criteria criteria = example.createCriteria();
     return frameModuleMapper.selectCountByExample(example);
   }
+
+  @Override
+  public FrameModule findByID(int id) {
+    return frameModuleMapper.selectByPrimaryKey(id);
+  }
 }
