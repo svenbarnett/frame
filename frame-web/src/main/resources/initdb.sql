@@ -1,4 +1,5 @@
 -- 框架用户表 --
+drop table `frame_user`;
 create table `frame_user`
 (
     `id`          bigint(20) not null auto_increment comment '主键',
@@ -20,9 +21,10 @@ create table `frame_user`
 
 
 -- 框架角色表 --
+drop table `frame_role`;
 create table `frame_role`
 (
-    `id`         bigint(20)  not null primary key auto_increment comment '角色唯一主键',
+    `id`          bigint(20)  not null primary key auto_increment comment '角色唯一主键',
     `role_name`   varchar(50) not null comment '角色名称',
     `status`      tinyint(1)  default 1 comment '角色状态，0：禁用 1：启用',
     `creator`     varchar(32) default '',
@@ -35,6 +37,7 @@ create table `frame_role`
 
 
 -- 框架权限表 --
+drop table `frame_permission`;
 create table `frame_permission`
 (
     `id`              bigint(20)   not null primary key auto_increment comment '权限唯一主键',
@@ -51,6 +54,7 @@ create table `frame_permission`
   default charset = utf8mb4;
 
 -- 用户-角色表 --
+drop table `frame_user_role`;
 create table frame_user_role
 (
     `uid`         bigint(20) not null comment '用户id',
@@ -65,6 +69,7 @@ create table frame_user_role
 
 
 -- 角色-权限表 --
+drop table `frame_role_permission`;
 create table `frame_role_permission`
 (
     `rid`         bigint(20) not null comment '角色id',
@@ -78,6 +83,7 @@ create table `frame_role_permission`
   default charset = utf8mb4 comment ='角色-权限表';
 
 -- 框架部门表 --
+drop table `frame_dept`;
 create table `frame_dept`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '部门主键',
@@ -93,8 +99,8 @@ create table `frame_dept`
 ) engine = innodb
   default charset = utf8mb4 comment ='框架部门表';
 
-
 -- 框架模块表 --
+drop table `frame_module`;
 create table `frame_module`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '模块主键',
