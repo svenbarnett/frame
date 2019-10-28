@@ -1,3 +1,25 @@
 # 生产环境配置
 logging:
   path: ./logs
+spring:
+  datasource:
+    username: frameroot
+    password: Ab@@##12345
+    url: jdbc:mysql://172.18.0.1:3306/frame?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  redis:
+    database: 12
+    host: 172.168.0.1
+    port: 6379
+    password:
+    timeout: 60
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+server:
+  servlet:
+    context-path: /
