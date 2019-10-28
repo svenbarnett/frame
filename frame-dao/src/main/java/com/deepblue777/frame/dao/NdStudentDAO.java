@@ -23,6 +23,15 @@ public interface NdStudentDAO {
    */
   List<NdStudent> findAll(Map<String, Object> map, int page, int limit);
 
+
+  /**
+   * 根据条件查询总数
+   *
+   * @param map 条件
+   * @return 总数
+   */
+  int findAllCount(Map<String, Object> map);
+
   /**
    * 根据id查询学生
    *
@@ -69,5 +78,12 @@ public interface NdStudentDAO {
    */
   void delete(int id);
 
+
+  /**
+   * 新增学生信息
+   *
+   * @param ndStudent 学生实体类
+   */
+  void add(NdStudent ndStudent);
 
 }

@@ -2,6 +2,10 @@ package com.deepblue777.frame.domain;
 
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
@@ -12,7 +16,10 @@ import java.util.Date;
  * @since 1.0
  */
 @Data
+@Table(name = "nd_student")
 public class NdStudent {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
   private Integer id;
   private String name;
   private String year;

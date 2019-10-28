@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>学生添加页面</title>
+    <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+
+        <div class="layui-card-header">学生信息</div>
+
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="" lay-filter="form-body">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="required|name" autocomplete="off"
+                               placeholder="请输入学生姓名"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">年级</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="year" lay-verify="required|year" autocomplete="off"
+                               placeholder="请输入学生所在年级"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">专业</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="major" lay-verify="required|year" autocomplete="off"
+                               placeholder="请输入学生专业"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">班级</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="classname" lay-verify="required|classname" autocomplete="off"
+                               placeholder="请输入学生所在班级" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" lay-verify="required|email" autocomplete="off"
+                               placeholder="请输入可用邮箱" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="number" lay-verify="required|number" autocomplete="off"
+                               placeholder="请输入学生学号"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">身份证</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="idcard" lay-verify="required|idcard" autocomplete="off"
+                               placeholder="请输入学生身份证"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">性别</label>
+                        <div class="layui-input-block">
+                            <select name="gender" lay-filter="gender">
+                                <option value="0" selected="0">保密</option>
+                                <option value="1">男</option>
+                                <option value="2">女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否启用</label>
+                        <div class="layui-input-block">
+                            <input type="radio" name="status" value="1" title="启用" checked="">
+                            <input type="radio" name="status" value="0" title="禁用">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="commit-form">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/statics/layui/layui.js}"></script>
+<script th:inline="none">
+    layui.config({
+        base: '../../statics/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , form = layui.form;
+
+        form.render(null, 'form-body');
+
+        /* 自定义验证规则 */
+        form.verify({
+            title: function (value) {
+                if (value.length < 5) {
+                    return '标题至少得5个字符啊';
+                }
+            }
+            , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            , content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        /* 监听提交 */
+        form.on('submit(commit-form)', function (data) {
+            admin.req({
+                url: '../student/doadd'
+                , type: 'post'
+                , contentType: 'application/json;charset=utf-8'
+                , data: JSON.stringify(data.field)
+                , done: function (res) {
+                    if (res.code == 1) {
+                        parent.layer.msg(res.msg);
+                        return false;
+                    }
+                    parent.layer.alert(res.msg);
+                    form.render(null, 'form-body');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

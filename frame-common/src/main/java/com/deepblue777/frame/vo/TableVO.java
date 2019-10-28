@@ -19,5 +19,12 @@ public class TableVO<T> {
   private int count;
   private T data;
 
+  public TableVO(int count, T data) {
+    this.code = 0;
+    this.msg = "操作成功！";
+    this.count = count;
+    this.data = data;
+  }
+
 
 }

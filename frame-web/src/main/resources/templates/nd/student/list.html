@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>list页面模板</title>
+    <title>学生list页面</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
@@ -40,7 +40,7 @@
                 <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
             </div>
             <!--表格数据区-->
-            <table id="table-box" lay-filter="table-box"></table>
+            <table id="table-box" lay-filter="table-box" lay-data="{id: 'table-box'}"></table>
         </div>
 
     </div>
@@ -54,23 +54,45 @@
             class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 
+
 <script th:src="@{/statics/layui/layui.js}"></script>
 <script th:inline="none">
     layui.config({
         base: '../../statics/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table'], function () {
+    }).use(['index', 'table', 'util'], function () {
         var $ = layui.$
+            , admin = layui.admin
             , form = layui.form
             , table = layui.table
-            , that = this;
+            , util = layui.util;
+
+
+        var renderCreateDate = function (d) {
+            if (d.createTime) {
+                return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")
+            }
+            return ''
+        };
+
+        var renderStatus = function (d) {
+            switch (d.status) {
+                case 1:
+                    return "<font color='green'>启用</font>";
+                    break;
+                case 0:
+                    return "<font color='red'>禁用</font>";
+                    break;
+            }
+        };
 
         //第一个实例
         table.render({
-            elem: '#table-box'
+            id: 'table-box'
+            , elem: '#table-box'
             , height: 600
-            , url: '../user/table' //数据接口
+            , url: '../student/table' //数据接口
             , method: 'post'
             , contentType: 'application/json;charset=utf-8'
             , page: true //开启分页
@@ -78,14 +100,14 @@
             , cols: [[ //表头
                 {checkbox: true}
                 , {field: 'id', title: 'ID', width: 80, sort: true}
-                , {field: 'loginid', title: '登录名'}
-                , {field: 'username', title: '用户名'}
-                , {field: 'contacts', title: '联系人'}
-                , {field: 'mobile', title: '手机号'}
-                , {field: 'gender', title: '性别'}
-                , {field: 'email', title: '邮箱'}
-                , {field: 'status', title: '状态'}
-                , {field: 'createTime', title: '创建时间', sort: true}
+                , {field: 'name', title: '学生名'}
+                , {field: 'year', title: '年级'}
+                , {field: 'major', title: '专业'}
+                , {field: 'classname', title: '班级'}
+                , {field: 'number', title: '学号'}
+                , {field: 'idcard', title: '身份证'}
+                , {field: 'status', width: 80, title: '状态', templet: renderStatus}
+                , {field: 'createTime', title: '创建时间', sort: true, templet: renderCreateDate}
                 , {width: 178, align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
             ]]
         });
@@ -95,8 +117,8 @@
             var data = obj.data;
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
-                    obj.del();
                     layer.close(index);
+                    del(data.id)
                 });
             } else if (obj.event === 'edit') {
                 edit(data.id);
@@ -112,10 +134,26 @@
             });
         });
 
+
         //事件
         var active = {
             batchdel: function () {
-                del()
+                var checkStatus = table.checkStatus('table-box')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length === 0) {
+                    return layer.msg('请选择数据');
+                }
+                var ids = [];
+                for (var i = 0; i < checkData.length; i++) {
+                    ids.push(checkData[i].id)
+                }
+                var idsString = ids.join(';');
+                console.log(idsString);
+                layer.confirm('确定删除吗？', function () {
+                    del(idsString)
+                });
+
             }
             , add: function () {
                 add()
@@ -124,54 +162,31 @@
         };
 
         var del = function (id) {
-            var checkStatus = table.checkStatus('batchdel')
-                , checkData = checkStatus.data; //得到选中的数据
-
-            if (checkData.length === 0) {
-                return layer.msg('请选择数据');
-            }
-
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                layer.close(index);
-
-                layer.confirm('确定删除吗？', function (index) {
-
-                    //执行 Ajax 后重载
-                    /*
-                    admin.req({
-                      url: 'xxx'
-                      //,……
-                    });
-                    */
+            admin.req({
+                url: '../student/delete?id=' + id
+                , type: 'post'
+                , contentType: 'application/json;charset=utf-8'
+                , done: function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
                     table.reload('table-box');
-                    layer.msg('已删除');
-                });
-            })
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
         };
 
         var add = function () {
             layer.open({
                 type: 2
-                , title: '添加用户'
-                , content: '../user/add'
+                , title: '添加学生'
+                , content: '../student/add'
                 , maxmin: true
                 , area: ['1200px', '800px']
-                , yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
-                        , submit = layero.find('iframe').contents().find('#' + submitID);
-                    //监听提交
-                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-                        var field = data.field; //获取提交的字段
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-user-front-submit'); //数据刷新
-                        layer.close(index); //关闭弹层
-                    });
-                    submit.trigger('click');
+                , end: function () {
+                    table.reload('table-box'); //数据刷新
                 }
             })
         };
@@ -180,22 +195,11 @@
             layer.open({
                 type: 2
                 , title: '编辑用户'
-                , content: '../user/edit?id=' + id
+                , content: '../student/edit?id=' + id
                 , maxmin: true
                 , area: ['1200px', '800px']
-                , yes: function (index, layero) {
-                    var iframeWindow = window['layui-layer-iframe' + index]
-                        , submitID = 'LAY-user-front-submit'
-                        , submit = layero.find('iframe').contents().find('#' + submitID);
-                    //监听提交
-                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
-                        var field = data.field; //获取提交的字段
-                        //提交 Ajax 成功后，静态更新表格中的数据
-                        //$.ajax({});
-                        table.reload('LAY-user-front-submit'); //数据刷新
-                        layer.close(index); //关闭弹层
-                    });
-                    submit.trigger('click');
+                , end: function () {
+                    table.reload('table-box'); //数据刷新
                 }
             });
         };

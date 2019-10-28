@@ -2,7 +2,7 @@
 drop table `nd_student`;
 create table `nd_student`
 (
-    `id`          bigint(20)  not null auto_increment comment '主键',
+    `id`          bigint(20)  not null auto_increment primary key comment '主键',
     `name`        varchar(32) not null comment '学生姓名',
     `year`        varchar(32)  default '' comment '学生年级',
     `major`       varchar(32)  default '' comment '学生专业',
@@ -15,7 +15,6 @@ create table `nd_student`
     `create_time` datetime     default current_timestamp comment '创建时间',
     `update_time` datetime comment '更新时间',
     `delete_time` datetime comment '删除时间',
-    primary key (`id`) using btree,
     unique key (`number`),
     unique key (`idcard`)
 ) engine = innodb

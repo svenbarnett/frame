@@ -27,12 +27,17 @@ public class NdStudentDAOImpl implements NdStudentDAO {
 
   @Override
   public List<NdStudent> findAll(Map<String, Object> map, int page, int limit) {
-    Example example = new Example(NdStudent.class);
-    Example.Criteria criteria = example.createCriteria();
-    example.orderBy("create_time").asc();
+    Example example = this.combineExample(map);
     int start = (page - 1) * limit;
     RowBounds rowBounds = new RowBounds(start, limit);
     return ndStudentMapper.selectByExampleAndRowBounds(example, rowBounds);
+  }
+
+
+  @Override
+  public int findAllCount(Map<String, Object> map) {
+    Example example = this.combineExample(map);
+    return ndStudentMapper.selectCountByExample(example);
   }
 
   @Override
@@ -44,7 +49,7 @@ public class NdStudentDAOImpl implements NdStudentDAO {
   public NdStudent findByNumber(String number) {
     Example example = new Example(NdStudent.class);
     Example.Criteria criteria = example.createCriteria();
-    criteria.andIsNotNull("delete_time");
+    criteria.andIsNotNull("deleteTime");
     criteria.andEqualTo("number", number);
     return ndStudentMapper.selectOneByExample(example);
   }
@@ -54,13 +59,13 @@ public class NdStudentDAOImpl implements NdStudentDAO {
     Example example = new Example(NdStudent.class);
     Example.Criteria criteria = example.createCriteria();
     criteria.andEqualTo("idcard", idcard);
-    criteria.andIsNotNull("delete_time");
+    criteria.andIsNull("deleteTime");
     return ndStudentMapper.selectOneByExample(example);
   }
 
   @Override
   public void update(NdStudent student) {
-    ndStudentMapper.updateByPrimaryKey(student);
+    ndStudentMapper.updateByPrimaryKeySelective(student);
   }
 
   @Override
@@ -78,5 +83,24 @@ public class NdStudentDAOImpl implements NdStudentDAO {
   @Override
   public void delete(int id) {
     this.delete(id, true);
+  }
+
+  @Override
+  public void add(NdStudent ndStudent) {
+    ndStudentMapper.insert(ndStudent);
+  }
+
+
+  private Example combineExample(Map<String, Object> map) {
+    Example example = new Example(NdStudent.class);
+    Example.Criteria criteria = example.createCriteria();
+    for (Map.Entry<String, Object> entry : map.entrySet()) {
+      String mapKey = entry.getKey();
+      Object mapValue = entry.getValue();
+      criteria.andEqualTo(mapKey, mapValue);
+    }
+    criteria.andIsNull("deleteTime");
+    example.orderBy("createTime").asc();
+    return example;
   }
 }
