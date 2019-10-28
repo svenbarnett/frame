@@ -84,10 +84,8 @@ public class FrameUserDAOImpl implements FrameUserDAO {
     if (map.get("gender") != null && map.get("gender") != "") {
       criteria.andEqualTo("gender", Integer.parseInt(map.get("gender").toString()));
     }
-
     criteria.andIsNull("deleteTime");
     example.orderBy("createTime").asc();
-
     return example;
   }
 }
