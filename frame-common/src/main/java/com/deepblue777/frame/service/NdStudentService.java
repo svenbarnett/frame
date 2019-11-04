@@ -25,4 +25,6 @@ public interface NdStudentService {
   void update(NdStudent ndStudent);
 
   void delete(int id);
+
+  List<NdStudent> findAll();
 }

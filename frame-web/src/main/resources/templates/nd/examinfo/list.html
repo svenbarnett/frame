@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>学生list页面</title>
+    <title>成绩list页面</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
@@ -12,34 +12,16 @@
 
 <body>
 <div class="layui-fluid">
-    <!-- 搜索区域-->
+    <!-- 搜索区域 -->
     <div class="layui-card">
-        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-form-item">
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">ID</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="table-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
 
         <div class="layui-card-body">
-            <!-- 按钮区域-->
+            <!-- 按钮区域 -->
             <div style="padding-bottom: 10px;">
                 <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button>
                 <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
             </div>
-            <!--表格数据区-->
+            <!-- 表格数据区 -->
             <table id="table-box" lay-filter="table-box" lay-data="{id: 'table-box'}"></table>
         </div>
 
@@ -47,7 +29,10 @@
 </div>
 
 </body>
+
 <script type="text/html" id="table-toolbar">
+    <a class="layui-btn layui-btn-blue layui-btn-xs" lay-event="manager"><i
+            class="layui-icon layui-icon-set-fill"></i>管理</a>
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
             class="layui-icon layui-icon-edit"></i>编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
@@ -56,6 +41,7 @@
 
 
 <script th:src="@{/statics/layui/layui.js}"></script>
+
 <script th:inline="none">
     layui.config({
         base: '../../statics/admin/' //静态资源所在路径
@@ -76,39 +62,35 @@
             return ''
         };
 
-        var renderStatus = function (d) {
-            switch (d.status) {
-                case 1:
-                    return "<font color='green'>启用</font>";
-                    break;
-                case 0:
-                    return "<font color='red'>禁用</font>";
-                    break;
+        var renderUpdateDate = function (d) {
+            if (d.updateTime) {
+                return util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")
             }
+            return ''
         };
+
 
         //第一个实例
         table.render({
             id: 'table-box'
             , elem: '#table-box'
             , height: 600
-            , url: '../student/table' //数据接口
+            , url: '../examinfo/table' //数据接口
             , method: 'post'
             , contentType: 'application/json;charset=utf-8'
             , page: true //开启分页
             , limit: 20
             , cols: [[ //表头
                 {checkbox: true}
-                , {field: 'id', title: 'ID', width: 80, sort: true}
-                , {field: 'name', title: '学生名'}
-                , {field: 'year', title: '年级'}
-                , {field: 'major', title: '专业'}
-                , {field: 'classname', title: '班级'}
-                , {field: 'number', title: '学号'}
-                , {field: 'idcard', title: '身份证'}
-                , {field: 'status', width: 80, title: '状态', templet: renderStatus}
+                , {field: 'id', title: 'ID', width: 60, sort: true}
+                , {field: 'year', title: '学年'}
+                , {width: 60,field: 'term', title: '学期'}
+                , {width: 120,field: 'studentName', title: '姓名'}
+                , {field: 'studentNumber', title: '学号'}
+                , {width: 60, field: 'gpa', title: '绩点'}
+                , {field: 'updateTime', title: '更新时间', sort: true, templet: renderUpdateDate}
                 , {field: 'createTime', title: '创建时间', sort: true, templet: renderCreateDate}
-                , {width: 178, align: 'center',title:'操作', fixed: 'right', toolbar: '#table-toolbar'}
+                , {width: 240, align: 'center', title: '操作', fixed: 'right', toolbar: '#table-toolbar'}
             ]]
         });
 
@@ -122,6 +104,8 @@
                 });
             } else if (obj.event === 'edit') {
                 edit(data.id);
+            } else if (obj.event === 'manager') {
+                manager(data.id);
             }
         });
 
@@ -163,7 +147,7 @@
 
         var del = function (id) {
             admin.req({
-                url: '../student/delete?id=' + id
+                url: '../examinfo/delete?id=' + id
                 , type: 'post'
                 , contentType: 'application/json;charset=utf-8'
                 , done: function (res) {
@@ -181,8 +165,8 @@
         var add = function () {
             layer.open({
                 type: 2
-                , title: '添加学生'
-                , content: '../student/add'
+                , title: '添加成绩'
+                , content: '../examinfo/add'
                 , maxmin: true
                 , area: ['1000px', '600px']
                 , end: function () {
@@ -194,10 +178,23 @@
         var edit = function (id) {
             layer.open({
                 type: 2
-                , title: '编辑用户'
-                , content: '../student/edit?id=' + id
+                , title: '编辑成绩'
+                , content: '../examinfo/edit?id=' + id
                 , maxmin: true
-                , area: ['1200px', '800px']
+                , area: ['1000px', '600px']
+                , end: function () {
+                    table.reload('table-box'); //数据刷新
+                }
+            });
+        };
+
+        var manager = function (id) {
+            layer.open({
+                type: 2
+                , title: '管理课程'
+                , content: '../examcourse/list?exam_info_id=' + id
+                , maxmin: true
+                , area: ['1000px', '600px']
                 , end: function () {
                     table.reload('table-box'); //数据刷新
                 }

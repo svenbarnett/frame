@@ -1,6 +1,7 @@
 package com.deepblue777.frame;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import tk.mybatis.spring.annotation.MapperScan;
 
@@ -14,6 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 @SpringBootApplication
 @MapperScan(basePackages = {"com.deepblue777.frame.mapper"})
+@EnableAutoConfiguration
 //使用tkmapper的扫描组件
 public class App {
   public static void main(String[] args) {

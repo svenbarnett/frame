@@ -1,5 +1,7 @@
 -- 框架用户表 --
-drop table `frame_user`;
+-- drop table `frame_user`;
+create database `frame`;
+use `frame`;
 create table `frame_user`
 (
     `id`          bigint(20) not null auto_increment comment '主键',
@@ -21,7 +23,7 @@ create table `frame_user`
 
 
 -- 框架角色表 --
-drop table `frame_role`;
+-- drop table `frame_role`;
 create table `frame_role`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '角色唯一主键',
@@ -37,7 +39,7 @@ create table `frame_role`
 
 
 -- 框架权限表 --
-drop table `frame_permission`;
+-- drop table `frame_permission`;
 create table `frame_permission`
 (
     `id`              bigint(20)   not null primary key auto_increment comment '权限唯一主键',
@@ -54,7 +56,7 @@ create table `frame_permission`
   default charset = utf8mb4;
 
 -- 用户-角色表 --
-drop table `frame_user_role`;
+-- drop table `frame_user_role`;
 create table frame_user_role
 (
     `uid`         bigint(20) not null comment '用户id',
@@ -69,7 +71,7 @@ create table frame_user_role
 
 
 -- 角色-权限表 --
-drop table `frame_role_permission`;
+-- drop table `frame_role_permission`;
 create table `frame_role_permission`
 (
     `rid`         bigint(20) not null comment '角色id',
@@ -83,7 +85,7 @@ create table `frame_role_permission`
   default charset = utf8mb4 comment ='角色-权限表';
 
 -- 框架部门表 --
-drop table `frame_dept`;
+-- drop table `frame_dept`;
 create table `frame_dept`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '部门主键',
@@ -100,7 +102,7 @@ create table `frame_dept`
   default charset = utf8mb4 comment ='框架部门表';
 
 -- 框架模块表 --
-drop table `frame_module`;
+-- drop table `frame_module`;
 create table `frame_module`
 (
     `id`          bigint(20)  not null primary key auto_increment comment '模块主键',

@@ -52,4 +52,9 @@ public class NdStudentServiceImpl implements NdStudentService {
   public void delete(int id) {
     ndStudentDAO.delete(id);
   }
+
+  @Override
+  public List<NdStudent> findAll() {
+    return ndStudentDAO.findAll();
+  }
 }

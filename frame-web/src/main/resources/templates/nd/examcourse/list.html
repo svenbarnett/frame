@@ -108,7 +108,7 @@
                 , {field: 'idcard', title: '身份证'}
                 , {field: 'status', width: 80, title: '状态', templet: renderStatus}
                 , {field: 'createTime', title: '创建时间', sort: true, templet: renderCreateDate}
-                , {width: 178, align: 'center',title:'操作', fixed: 'right', toolbar: '#table-toolbar'}
+                , {width: 178, align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
             ]]
         });
 
@@ -184,7 +184,7 @@
                 , title: '添加学生'
                 , content: '../student/add'
                 , maxmin: true
-                , area: ['1000px', '600px']
+                , area: ['1200px', '800px']
                 , end: function () {
                     table.reload('table-box'); //数据刷新
                 }

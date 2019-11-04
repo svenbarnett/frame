@@ -13,6 +13,10 @@ import java.util.Map;
  * @since 1.0
  */
 public interface NdStudentDAO {
+
+  List<NdStudent> findAll();
+
+
   /**
    * 分页、条件查询所有
    *

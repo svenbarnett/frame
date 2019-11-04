@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>成绩添加页面</title>
+    <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
+    <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+
+        <div class="layui-card-header">成绩信息</div>
+
+        <div class="layui-card-body" style="padding: 15px;">
+            <form class="layui-form" action="" lay-filter="form-body">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学年</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="year" lay-verify="required|year" autocomplete="off"
+                               placeholder="请输入学年"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学期</label>
+                    <div class="layui-input-block">
+                        <select name="term" lay-verify="">
+                            <option value="">请选择</option>
+                            <option value="1">第一学期</option>
+                            <option value="2">第二学期</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学生</label>
+                    <div class="layui-input-block">
+                        <select name="number" lay-verify="">
+                            <option value="">请选择</option>
+                            <th:block th:each="code: ${studentcodes}">
+                                <option th:value="${code.studentName+';'+code.studentNumber}"
+                                        th:text="${code.studentName+'('+code.studentNumber+')'}"></option>
+                            </th:block>
+
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学生绩点</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="gpa" lay-verify="required|gpa" autocomplete="off"
+                               placeholder="请输入学生绩点" class="layui-input">
+                    </div>
+                </div>
+
+
+                <div class="layui-form-item layui-layout-admin">
+                    <div class="layui-input-block">
+                        <div class="layui-footer" style="left: 0;">
+                            <button class="layui-btn" lay-submit="" lay-filter="commit-form">立即提交</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/statics/layui/layui.js}"></script>
+<script th:inline="none">
+    layui.config({
+        base: '../../statics/admin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , form = layui.form;
+
+        form.render(null, 'form-body');
+
+        /* 自定义验证规则 */
+        form.verify({
+            title: function (value) {
+                if (value.length < 5) {
+                    return '标题至少得5个字符啊';
+                }
+            }
+            , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            , content: function (value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        /* 监听提交 */
+        form.on('submit(commit-form)', function (data) {
+            admin.req({
+                url: '../examinfo/doadd'
+                , type: 'post'
+                , contentType: 'application/json;charset=utf-8'
+                , data: JSON.stringify(data.field)
+                , done: function (res) {
+                    if (res.code == 1) {
+                        parent.layer.msg(res.msg);
+                        return false;
+                    }
+                    parent.layer.alert(res.msg);
+                    form.render(null, 'form-body');
+                }
+            });
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>
