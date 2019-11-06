@@ -4,7 +4,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>学生list页面</title>
+    <title>课程list页面</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
@@ -14,24 +14,6 @@
 <div class="layui-fluid">
     <!-- 搜索区域-->
     <div class="layui-card">
-        <div class="layui-form layui-card-header layuiadmin-card-header-auto">
-            <div class="layui-form-item">
-
-                <div class="layui-inline">
-                    <label class="layui-form-label">ID</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="id" placeholder="请输入" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-
-                <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-useradmin" lay-submit lay-filter="table-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
 
         <div class="layui-card-body">
             <!-- 按钮区域-->
@@ -61,54 +43,49 @@
         base: '../../statics/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'util'], function () {
+        ,svenutil:'svenutil'
+    }).use(['index', 'table', 'util','svenutil'], function () {
         var $ = layui.$
             , admin = layui.admin
             , form = layui.form
             , table = layui.table
+            ,sveutil = layui.svenutil
             , util = layui.util;
 
 
         var renderCreateDate = function (d) {
             if (d.createTime) {
-                return util.toDateString(d.createTime, "yyyy-MM-dd HH:mm:ss")
+                return util.toDateString(d.createTime, "yyyy-MM-dd")
             }
             return ''
         };
 
-        var renderStatus = function (d) {
-            switch (d.status) {
-                case 1:
-                    return "<font color='green'>启用</font>";
-                    break;
-                case 0:
-                    return "<font color='red'>禁用</font>";
-                    break;
+        var renderUpdateDate = function (d) {
+            if (d.updateTime) {
+                return util.toDateString(d.updateTime, "yyyy-MM-dd HH:mm:ss")
             }
+            return ''
         };
 
         //第一个实例
         table.render({
             id: 'table-box'
             , elem: '#table-box'
-            , height: 600
-            , url: '../student/table' //数据接口
+            , height: 450
+            , url: '../examcourse/table' //数据接口
             , method: 'post'
             , contentType: 'application/json;charset=utf-8'
             , page: true //开启分页
             , limit: 20
             , cols: [[ //表头
                 {checkbox: true}
-                , {field: 'id', title: 'ID', width: 80, sort: true}
-                , {field: 'name', title: '学生名'}
-                , {field: 'year', title: '年级'}
-                , {field: 'major', title: '专业'}
-                , {field: 'classname', title: '班级'}
-                , {field: 'number', title: '学号'}
-                , {field: 'idcard', title: '身份证'}
-                , {field: 'status', width: 80, title: '状态', templet: renderStatus}
-                , {field: 'createTime', title: '创建时间', sort: true, templet: renderCreateDate}
-                , {width: 178, align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
+                , {field: 'id', title: 'ID', width: 60, sort: true}
+                , {field: 'name', title: '课程名称'}
+                , {field: 'weight', title: '课程学分', width: 90}
+                , {field: 'score', title: '课程得分', width: 90}
+                , {field: 'updateTime', title: '更新时间', sort: true, templet: renderUpdateDate}
+                , {field: 'createTime',width: 110, title: '创建时间', sort: true, templet: renderCreateDate}
+                , {width: 148, title: '操作', align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
             ]]
         });
 
@@ -163,7 +140,7 @@
 
         var del = function (id) {
             admin.req({
-                url: '../student/delete?id=' + id
+                url: '../examcourse/delete?id=' + id
                 , type: 'post'
                 , contentType: 'application/json;charset=utf-8'
                 , done: function (res) {
@@ -179,12 +156,13 @@
         };
 
         var add = function () {
+            var exam_info_id = sveutil.getUrlParam("exam_info_id");
             layer.open({
                 type: 2
-                , title: '添加学生'
-                , content: '../student/add'
+                , title: '添加课程'
+                , content: '../examcourse/add?exam_info_id='+exam_info_id
                 , maxmin: true
-                , area: ['1200px', '800px']
+                , area: ['800px', '500px']
                 , end: function () {
                     table.reload('table-box'); //数据刷新
                 }
@@ -194,10 +172,10 @@
         var edit = function (id) {
             layer.open({
                 type: 2
-                , title: '编辑用户'
-                , content: '../student/edit?id=' + id
+                , title: '编辑课程'
+                , content: '../examcourse/edit?id=' + id
                 , maxmin: true
-                , area: ['1200px', '800px']
+                , area: ['800px', '500px']
                 , end: function () {
                     table.reload('table-box'); //数据刷新
                 }

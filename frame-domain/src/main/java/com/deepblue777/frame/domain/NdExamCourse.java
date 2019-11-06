@@ -17,18 +17,18 @@ import java.util.Date;
  * @since 1.0
  */
 @Data
-@Table(name="nd_exam_course")
+@Table(name = "nd_exam_course")
 public class NdExamCourse {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
-  private Integer id;
-  private Integer examInfoId;
-  private String name;
-  private double weight;
-  private double score;
-  private Date createTime;
-  private Date updateTime;
-  private Date deleteTime;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
+    private Integer id;
+    private Integer examInfoId;
+    private String name;
+    private Float weight;
+    private Float score;
+    private Date createTime;
+    private Date updateTime;
+    private Date deleteTime;
 
 }
