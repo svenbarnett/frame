@@ -23,4 +23,8 @@ public interface NdExamInfoService {
     void add(NdExamInfo ndExamInfo);
 
     void delete(int id);
+
+    NdExamInfo findById(int infoId);
+
+    void update(NdExamInfo info);
 }

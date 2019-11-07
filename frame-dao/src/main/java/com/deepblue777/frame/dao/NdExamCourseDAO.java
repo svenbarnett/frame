@@ -33,4 +33,12 @@ public interface NdExamCourseDAO {
 
     void add(NdExamCourse course);
 
+    void delete(int id, boolean softdelete);
+
+    void delete(int id);
+
+    NdExamCourse findById(int id);
+
+    void update(NdExamCourse course);
+
 }

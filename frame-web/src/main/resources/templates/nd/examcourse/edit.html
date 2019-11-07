@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>学生编辑页面</title>
+    <title>课程编辑页面</title>
     <link rel="stylesheet" th:href="@{/statics/layui/css/layui.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/layui/css/modules/layer/default/layer.css}" media="all">
     <link rel="stylesheet" th:href="@{/statics/admin/styles/css/admin.css}" media="all">
@@ -11,113 +11,38 @@
 <div class="layui-fluid">
     <div class="layui-card">
 
-        <div class="layui-card-header">学生信息</div>
+        <div class="layui-card-header">课程信息</div>
 
         <div class="layui-card-body" style="padding: 15px;">
             <form class="layui-form" action="" lay-filter="form-body">
 
-                <input name="id" th:value="${student.id}" class="layui-hide"/>
+                <input name="id" th:value="${course.id}" class="layui-hide"/>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">姓名</label>
+                    <label class="layui-form-label">课程名称</label>
                     <div class="layui-input-block">
                         <input type="text" name="name" lay-verify="required|name" autocomplete="off"
-                               placeholder="请输入学生姓名"
-                               class="layui-input" th:value="${student.name}"/>
+                               placeholder="请输入课程名称"
+                               class="layui-input" th:value="${course.name}">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">年级</label>
+                    <label class="layui-form-label">课程学分</label>
                     <div class="layui-input-block">
-                        <input type="text" name="year" lay-verify="required|year" autocomplete="off"
-                               placeholder="请输入学生所在年级"
-                               class="layui-input" th:value="${student.year}"/>
+                        <input type="text" name="weight" lay-verify="required|weight" autocomplete="off"
+                               placeholder="请输入课程学分"
+                               class="layui-input" th:value="${course.weight}">
                     </div>
                 </div>
 
                 <div class="layui-form-item">
-                    <label class="layui-form-label">专业</label>
+                    <label class="layui-form-label">考试成绩</label>
                     <div class="layui-input-block">
-                        <input type="text" name="major" lay-verify="required|year" autocomplete="off"
-                               placeholder="请输入学生专业"
-                               class="layui-input" th:value="${student.major}"/>
+                        <input type="text" name="score" lay-verify="required|score" autocomplete="off"
+                               placeholder="课程考试成绩"
+                               class="layui-input" th:value="${course.score}">
                     </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">班级</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="classname" lay-verify="required|classname" autocomplete="off"
-                               placeholder="请输入学生所在班级" class="layui-input" th:value="${student.classname}"/>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">邮箱</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="email" lay-verify="required|email" autocomplete="off"
-                               placeholder="请输入可用邮箱" class="layui-input" th:value="${student.email}"/>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">学号</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="number" lay-verify="required|number" autocomplete="off"
-                               placeholder="请输入学生学号"
-                               class="layui-input" th:value="${student.number}"/>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <label class="layui-form-label">身份证</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="idcard" lay-verify="required|idcard" autocomplete="off"
-                               placeholder="请输入学生身份证"
-                               class="layui-input" th:value="${student.idcard}"/>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">性别</label>
-                        <div class="layui-input-block">
-                            <select name="gender" lay-filter="gender" th:value="${student.gender}">
-                                <block th:if="${student.gender==0}">
-                                    <option value="0" selected>保密</option>
-                                    <option value="1">男</option>
-                                    <option value="2">女</option>
-                                </block>
-
-                                <block th:if="${student.gender==1}">
-                                    <option value="0">保密</option>
-                                    <option value="1" selected>男</option>
-                                    <option value="2">女</option>
-                                </block>
-
-                                <block th:if="${student.gender==2}">
-                                    <option value="0">保密</option>
-                                    <option value="1">男</option>
-                                    <option value="2" selected>女</option>
-                                </block>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-inline">
-                        <label class="layui-form-label">是否启用</label>
-                        <div class="layui-input-block" th:if="${student.status==1}">
-                            <input type="radio" name="status" value="1" title="启用" checked="">
-                            <input type="radio" name="status" value="0" title="禁用">
-                        </div>
-                        <div class="layui-input-block" th:if="${student.status==0}">
-                            <input type="radio" name="status" value="1" title="启用">
-                            <input type="radio" name="status" value="0" title="禁用" checked="">
-                        </div>
-                    </div>
-
                 </div>
 
                 <div class="layui-form-item layui-layout-admin">
@@ -163,7 +88,7 @@
         /* 监听提交 */
         form.on('submit(commit-form)', function (data) {
             admin.req({
-                url: '../student/doedit'
+                url: '../examcourse/doedit'
                 , type: 'post'
                 , contentType: 'application/json;charset=utf-8'
                 , data: JSON.stringify(data.field)

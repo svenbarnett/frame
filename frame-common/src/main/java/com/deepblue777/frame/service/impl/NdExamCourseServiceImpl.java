@@ -7,6 +7,7 @@ import com.deepblue777.frame.service.NdExamCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,5 +36,21 @@ public class NdExamCourseServiceImpl implements NdExamCourseService {
     @Override
     public void add(NdExamCourse course) {
         ndExamCourseDAO.add(course);
+    }
+
+    @Override
+    public void delete(int id) {
+        ndExamCourseDAO.delete(id);
+    }
+
+    @Override
+    public NdExamCourse findById(int id) {
+        return ndExamCourseDAO.findById(id);
+    }
+
+    @Override
+    public void update(NdExamCourse course) {
+        course.setUpdateTime(new Date());
+        ndExamCourseDAO.update(course);
     }
 }

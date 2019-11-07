@@ -15,8 +15,6 @@ import java.util.Map;
  */
 public interface NdExamInfoDAO{
 
-    void delete(int id);
-
 
     void add(NdExamInfo ndExamInfo);
 
@@ -44,7 +42,7 @@ public interface NdExamInfoDAO{
      * @param id 成绩主键
      * @return
      */
-    NdExamInfoMapper findById(int id);
+    NdExamInfo findById(int id);
 
     /**
      * 根据examle的条件查询
@@ -54,7 +52,7 @@ public interface NdExamInfoDAO{
      */
     NdExamInfoMapper findByMap(Map<String, Object> map);
 
-    void update(NdExamInfoMapper ndExamInfo);
+    void update(NdExamInfo ndExamInfo);
 
     void deleteById(int id);
 

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * [简单描述]
@@ -62,7 +59,18 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
     @Transactional(rollbackFor = BusinessException.class)
     @Override
     public void delete(int id) {
-        ndExamInfoDAO.delete(id);
+        ndExamInfoDAO.deleteById(id);
         // TODO 需要删除对应的成绩的课程成绩分数
+    }
+
+    @Override
+    public NdExamInfo findById(int infoId) {
+        return ndExamInfoDAO.findById(infoId);
+    }
+
+    @Override
+    public void update(NdExamInfo info) {
+        info.setUpdateTime(new Date());
+        ndExamInfoDAO.update(info);
     }
 }

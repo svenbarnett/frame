@@ -53,6 +53,8 @@
             , util = layui.util;
 
 
+        var exam_info_id = sveutil.getUrlParam("exam_info_id");
+
         var renderCreateDate = function (d) {
             if (d.createTime) {
                 return util.toDateString(d.createTime, "yyyy-MM-dd")
@@ -77,6 +79,9 @@
             , contentType: 'application/json;charset=utf-8'
             , page: true //开启分页
             , limit: 20
+            , where:{
+                'examInfoId':exam_info_id
+            }
             , cols: [[ //表头
                 {checkbox: true}
                 , {field: 'id', title: 'ID', width: 60, sort: true}
@@ -87,7 +92,7 @@
                 , {field: 'createTime',width: 110, title: '创建时间', sort: true, templet: renderCreateDate}
                 , {width: 148, title: '操作', align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
             ]]
-        });
+        },);
 
         //监听工具条
         table.on('tool(table-box)', function (obj) {
@@ -105,6 +110,7 @@
         //监听搜索
         form.on('submit(table-search)', function (data) {
             var field = data.field;
+            field['examInfoId'] = exam_info_id;
             //执行重载
             table.reload('table-box', {
                 where: field

@@ -40,8 +40,11 @@ public class NdExamCourseAction {
     }
 
     @GetMapping("/edit")
-    public ModelAndView edit() {
-        return new ModelAndView("nd/examcourse/edit");
+    public ModelAndView edit(@RequestParam("id") Integer id) {
+        ModelAndView mv = new ModelAndView("nd/examcourse/edit");
+        NdExamCourse course = ndExamCourseService.findById(id);
+        mv.addObject("course",course);
+        return mv;
     }
 
     @GetMapping("/detail")
@@ -74,6 +77,24 @@ public class NdExamCourseAction {
         course.setCreateTime(new Date());
         ndExamCourseService.add(course);
         return JSON.toJSONString(new BaseResponse<>(0, "新增成功！"));
+    }
+
+    @PostMapping("doedit")
+    public String doedit(@RequestBody NdExamCourse course){
+        ndExamCourseService.update(course);
+        return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam("id") String ids){
+        String[] split = ids.split(";");
+        int count = 0;
+        for (int i = 0; i < split.length; i++) {
+            int id = Integer.valueOf(split[i]);
+            ndExamCourseService.delete(id);
+            count = count + 1;
+        }
+        return JSON.toJSONString(new BaseResponse<>(0, "删除" + count + "条成功！"));
     }
 
 

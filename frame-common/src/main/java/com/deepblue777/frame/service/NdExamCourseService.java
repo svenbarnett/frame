@@ -18,4 +18,10 @@ public interface NdExamCourseService {
     int getTablesCount(Map<String,Object> map);
 
     void add(NdExamCourse course);
+
+    void delete(int id);
+
+    NdExamCourse findById(int id);
+
+    void update(NdExamCourse course);
 }

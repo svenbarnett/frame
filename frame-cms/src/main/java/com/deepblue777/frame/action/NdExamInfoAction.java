@@ -42,8 +42,13 @@ public class NdExamInfoAction {
     }
 
     @GetMapping("/edit")
-    public ModelAndView edit() {
-        return new ModelAndView("nd/examinfo/edit");
+    public ModelAndView edit(@RequestParam("id") int infoId) {
+        ModelAndView mv = new ModelAndView("nd/examinfo/edit");
+        NdExamInfo info = ndExamInfoService.findById(infoId);
+        List<Map<String, String>> codes = ndExamInfoService.getSutdentsCode();
+        mv.addObject("studentcodes", codes);
+        mv.addObject("info", info);
+        return mv;
     }
 
     @GetMapping("/detail")
@@ -91,5 +96,19 @@ public class NdExamInfoAction {
             count = count + 1;
         }
         return JSON.toJSONString(new BaseResponse<>(0, "删除" + count + "条成功！"));
+    }
+
+    @PostMapping("/doedit")
+    public String doedit(@RequestBody Map<String ,Object> map) {
+        NdExamInfo info = new NdExamInfo();
+        info.setId(Integer.valueOf(map.get("id").toString()));
+        info.setCreateTime(new Date());
+        info.setGpa(Float.valueOf(map.get("gpa").toString()));
+        info.setStudentName(map.get("number").toString().split(";")[0]);
+        info.setYear(map.get("year").toString());
+        info.setTerm(Integer.valueOf(map.get("term").toString()));
+        info.setStudentNumber(map.get("number").toString().split(";")[1]);
+        ndExamInfoService.update(info);
+        return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
     }
 }

@@ -78,7 +78,7 @@
 
         /* 监听提交 */
         form.on('submit(commit-form)', function (data) {
-            data.field['exam_info_id'] = svenutil.getUrlParam("exam_info_id");
+            data.field['examInfoId'] = svenutil.getUrlParam("exam_info_id");
             admin.req({
                 url: '../examcourse/doadd'
                 , type: 'post'

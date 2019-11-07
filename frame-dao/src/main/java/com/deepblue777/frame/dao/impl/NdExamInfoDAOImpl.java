@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +27,6 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
     @Resource
     private NdExamInfoMapper ndExamInfoMapper;
 
-    @Override
-    public void delete(int id) {
-        ndExamInfoMapper.deleteByPrimaryKey(id);
-    }
 
     @Override
     public void add(NdExamInfo ndExamInfo) {
@@ -51,8 +48,8 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
     }
 
     @Override
-    public NdExamInfoMapper findById(int id) {
-        return null;
+    public NdExamInfo findById(int id) {
+        return ndExamInfoMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -61,17 +58,24 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
     }
 
     @Override
-    public void update(NdExamInfoMapper ndExamInfo) {
-
+    public void update(NdExamInfo ndExamInfo) {
+        ndExamInfoMapper.updateByPrimaryKeySelective(ndExamInfo);
     }
 
     @Override
     public void deleteById(int id) {
+        deleteById(id,true);
 
     }
 
     @Override
     public void deleteById(int id, boolean softdelete) {
-
+        if (softdelete) {
+            NdExamInfo info = findById(id);
+            info.setDeleteTime(new Date());
+            ndExamInfoMapper.updateByPrimaryKey(info);
+        } else {
+            ndExamInfoMapper.deleteByPrimaryKey(id);
+        }
     }
 }
