@@ -20,8 +20,8 @@ public class NdExamInfo {
     private Integer term;
     private String studentName;
     private String studentNumber;
-    private Integer allscore;
-    private Integer getscore;
+    private Float allscore;
+    private Float getscore;
     private Float gpa;
     private Integer rank;
     private Date createTime;

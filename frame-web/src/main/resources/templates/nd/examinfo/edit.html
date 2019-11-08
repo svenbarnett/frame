@@ -53,10 +53,35 @@
 
 
                 <div class="layui-form-item">
+                    <label class="layui-form-label">总学分</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="allscore" lay-verify="required|allscore" autocomplete="off"
+                               placeholder="请输入学生总学分" class="layui-input" th:value="${info.allscore}">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">获得学分</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="getscore" lay-verify="required|getscore" autocomplete="off"
+                               placeholder="请输入学生获得学分" class="layui-input" th:value="${info.getscore}">
+                    </div>
+                </div>
+
+
+
+                <div class="layui-form-item">
                     <label class="layui-form-label">学生绩点</label>
                     <div class="layui-input-block">
                         <input type="text" name="gpa" lay-verify="required|gpa" autocomplete="off"
                                placeholder="请输入学生绩点" class="layui-input" th:value="${info.gpa}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">学生排名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="rank" lay-verify="required|rank" autocomplete="off"
+                               placeholder="请输入学生排名" class="layui-input" th:value="${info.rank}">
                     </div>
                 </div>
 

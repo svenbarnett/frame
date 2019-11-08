@@ -82,6 +82,9 @@ public class NdExamInfoAction {
         info.setYear(map.get("year").toString());
         info.setTerm(Integer.valueOf(map.get("term").toString()));
         info.setStudentNumber(map.get("number").toString().split(";")[1]);
+        info.setAllscore(Float.valueOf(map.get("allscore").toString()));
+        info.setGetscore(Float.valueOf(map.get("getscore").toString()));
+        info.setRank(Integer.valueOf(map.get("rank").toString()));
         ndExamInfoService.add(info);
         return JSON.toJSONString(new BaseResponse<>(0, "新增成功！"));
     }
@@ -99,7 +102,7 @@ public class NdExamInfoAction {
     }
 
     @PostMapping("/doedit")
-    public String doedit(@RequestBody Map<String ,Object> map) {
+    public String doedit(@RequestBody Map<String, Object> map) {
         NdExamInfo info = new NdExamInfo();
         info.setId(Integer.valueOf(map.get("id").toString()));
         info.setCreateTime(new Date());
@@ -108,6 +111,9 @@ public class NdExamInfoAction {
         info.setYear(map.get("year").toString());
         info.setTerm(Integer.valueOf(map.get("term").toString()));
         info.setStudentNumber(map.get("number").toString().split(";")[1]);
+        info.setAllscore(Float.valueOf(map.get("allscore").toString()));
+        info.setGetscore(Float.valueOf(map.get("getscore").toString()));
+        info.setRank(Integer.valueOf(map.get("rank").toString()));
         ndExamInfoService.update(info);
         return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
     }

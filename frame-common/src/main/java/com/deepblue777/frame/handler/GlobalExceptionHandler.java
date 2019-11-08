@@ -29,6 +29,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             return new BaseResponse(exception.getCode(), e.getMessage());
         }
         LOGGER.info("#### 系统-未知错误：{}", e.getMessage());
+        e.printStackTrace();
         return new BaseResponse(500, "未知错误");
     }
 }
