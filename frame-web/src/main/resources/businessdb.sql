@@ -28,7 +28,10 @@ create table `nd_exam_info`
     `term`           tinyint(1) comment '学期，1：第一学期，2：第二学期',
     `student_name`   varchar(32) comment '学生姓名',
     `student_number` varchar(32) comment '学生学号',
+    `allscore` int(11) comment '总学分',
+    `getscore` int(11) comment '获得学分',
     `gpa`            float(4, 2) default 0.00 comment '学生绩点',
+    `rank` int(11) comment '排名',
     `create_time`    datetime    default current_timestamp comment '创建时间',
     `update_time`    datetime comment '更新时间',
     `delete_time`    datetime comment '删除时间',
@@ -44,7 +47,7 @@ create table `nd_exam_course`
     `exam_info_id` bigint(20) comment '成绩信息表id',
     `name`         varchar(32) comment '科目名称',
     `weight`       float(4, 2) default 0.00 comment '课程学分',
-    `score`        float(5, 2) default 0.00 comment '课程得分',
+    `score`        varchar(32) comment '课程得分',
     `create_time`  datetime    default current_timestamp comment '创建时间',
     `update_time`  datetime comment '更新时间',
     `delete_time`  datetime comment '删除时间',
@@ -52,3 +55,4 @@ create table `nd_exam_course`
     foreign key (exam_info_id) references nd_exam_info (id)
 ) engine = innodb
   default charset = utf8mb4 comment ='学生成绩科目表';
+

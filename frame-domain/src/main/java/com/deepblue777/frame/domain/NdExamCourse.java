@@ -26,7 +26,7 @@ public class NdExamCourse {
     private Integer examInfoId;
     private String name;
     private Float weight;
-    private Float score;
+    private String score;
     private Date createTime;
     private Date updateTime;
     private Date deleteTime;
