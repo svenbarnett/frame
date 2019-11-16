@@ -69,6 +69,11 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
     }
 
     @Override
+    public NdExamInfo findByStudentNumber(String studentNumber, String year,Integer term) {
+        return ndExamInfoDAO.findByStudentNumber(studentNumber,year,term);
+    }
+
+    @Override
     public void update(NdExamInfo info) {
         info.setUpdateTime(new Date());
         ndExamInfoDAO.update(info);

@@ -20,6 +20,8 @@ public interface NdStudentService {
 
   NdStudent getStudentByID(int id);
 
+  NdStudent getStudentByNumber(String number);
+
   void add(NdStudent ndStudent);
 
   void update(NdStudent ndStudent);

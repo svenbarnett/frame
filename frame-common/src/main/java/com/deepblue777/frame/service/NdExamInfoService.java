@@ -26,5 +26,7 @@ public interface NdExamInfoService {
 
     NdExamInfo findById(int infoId);
 
+    NdExamInfo findByStudentNumber(String studentNumber,String year,Integer term);
+
     void update(NdExamInfo info);
 }

@@ -58,7 +58,7 @@ public class NdStudentDAOImpl extends BaseDAO implements NdStudentDAO {
     public NdStudent findByNumber(String number) {
         Example example = new Example(NdStudent.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andIsNotNull("deleteTime");
+        criteria.andIsNull("deleteTime");
         criteria.andEqualTo("number", number);
         return ndStudentMapper.selectOneByExample(example);
     }

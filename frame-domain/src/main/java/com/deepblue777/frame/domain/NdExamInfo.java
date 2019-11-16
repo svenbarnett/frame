@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Table(name = "nd_exam_info")
@@ -27,5 +28,6 @@ public class NdExamInfo {
     private Date createTime;
     private Date updateTime;
     private Date deleteTime;
+    private List<NdExamCourse> courses;
 
 }

@@ -29,6 +29,11 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
 
 
     @Override
+    public NdExamInfo findByStudentNumber(String studentNumber,String year,Integer term) {
+        return ndExamInfoMapper.findByStudentNumber(studentNumber,year,term);
+    }
+
+    @Override
     public void add(NdExamInfo ndExamInfo) {
         ndExamInfoMapper.insert(ndExamInfo);
     }

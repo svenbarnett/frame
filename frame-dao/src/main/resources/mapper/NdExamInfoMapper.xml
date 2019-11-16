@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.deepblue777.frame.mapper.NdExamInfoMapper">
+
+    <resultMap id="ndExamInfoMap" type="com.deepblue777.frame.domain.NdExamInfo">
+        <id property="id" column="id"/>
+        <result property="id" column="id"/>
+        <result property="year" column="year"/>
+        <result property="term" column="term"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentNumber" column="student_number"/>
+        <result property="allscore" column="allscore"/>
+        <result property="getscore" column="getscore"/>
+        <result property="gpa" column="gpa"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleteTime" column="delete_time"/>
+        <result property="rank" column="rank"/>
+        <collection property="courses" ofType="com.deepblue777.frame.domain.NdExamCourse">
+            <id property="id" column="id"/>
+            <result property="examInfoId" column="exam_info_id"/>
+            <result property="name" column="name"/>
+            <result property="weight" column="weight"/>
+            <result property="score" column="score"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="deleteTime" column="delete_time"/>
+        </collection>
+    </resultMap>
+
+    <select id="findByStudentNumber" resultMap="ndExamInfoMap">
+        select * from nd_exam_info nei inner join nd_exam_course nec on nei.id = nec.exam_info_id where nei.student_number = #{studentNumber} and nei.year = #{year} and nei.term = #{term}
+    </select>
+
+</mapper>

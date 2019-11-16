@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public interface NdExamInfoDAO{
 
+    NdExamInfo findByStudentNumber(String studentNumber,String year,Integer term);
+
 
     void add(NdExamInfo ndExamInfo);
 

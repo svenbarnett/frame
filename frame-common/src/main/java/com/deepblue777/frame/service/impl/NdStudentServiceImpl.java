@@ -39,6 +39,11 @@ public class NdStudentServiceImpl implements NdStudentService {
   }
 
   @Override
+  public NdStudent getStudentByNumber(String number) {
+    return ndStudentDAO.findByNumber(number);
+  }
+
+  @Override
   public void add(NdStudent ndStudent) {
     ndStudentDAO.add(ndStudent);
   }
