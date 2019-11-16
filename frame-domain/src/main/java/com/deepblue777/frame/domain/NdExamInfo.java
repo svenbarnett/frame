@@ -8,7 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Table(name = "nd_exam_info")
@@ -28,6 +30,6 @@ public class NdExamInfo {
     private Date createTime;
     private Date updateTime;
     private Date deleteTime;
-    private List<NdExamCourse> courses;
+    private Set<NdExamCourse> courses = new HashSet<>();
 
 }
