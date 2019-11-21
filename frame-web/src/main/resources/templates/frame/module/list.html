@@ -16,7 +16,7 @@
 
 <body>
 <div class="layui-fluid">
-    <div class="layui-col-lg2">
+    <div class="layui-col-md2">
         <div class="layui-card">
             <div class="layui-card-header">选择模块</div>
             <div class="layui-card-body" style="height: 700px;overflow: auto;">
@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="layui-col-lg10">
+    <div class="layui-col-md10">
         <div class="layui-card">
             <!--卡片头区域-->
             <div class="layui-card-header layui-layer-padding">
@@ -68,14 +68,15 @@
     }).extend({
         index: 'lib/index' //主入口模块
         , dtree: '../extends/dtree/dtree'
-    }).use(['index', 'table', 'dtree'], function () {
+    }).use(['index', 'table', 'dtree', 'util'], function () {
         var $ = layui.$
             , form = layui.form
             , table = layui.table
+            , util = layui.util
             , dtree = layui.dtree;
 
         // 暂存变量
-        var pid;
+        var pid = 0;
         // 树实例
         dtree.render({
             elem: "#left-tree"
@@ -94,6 +95,22 @@
                 }
             });
         });
+        var renderCreateDate = function (d) {
+            if (d.createTime) {
+                return util.toDateString(d.createTime, "yyyy-MM-dd")
+            }
+            return ''
+        };
+
+        var renderStatusTemplate = function (d) {
+            var status = d.status == 1 ? 0 : 1;
+            if (d.status == 1) {
+                return '<input type="checkbox" value="' + d.status + '"  checked lay-skin="switch" lay-text="启用|禁用">';
+            } else {
+                return '<input type="checkbox" value="' + d.status + '" lay-skin="switch" lay-text="启用|禁用">';
+
+            }
+        };
 
         //第一个实例
         table.render({
@@ -106,16 +123,16 @@
             , limit: 20
             , cols: [[ //表头
                 {checkbox: true}
-                , {field: 'id', title: 'ID', width: 80, sort: true}
-                , {field: 'pid', title: '父ID'}
-                , {field: 'name', title: '模块名称'}
+                , {field: 'id', title: 'ID', width: 60, sort: true}
+                , {field: 'pid', title: '父ID', width: 60}
+                , {field: 'name', title: '模块名称', width: 160}
                 , {field: 'url', title: '模块路径'}
                 , {field: 'icon', title: '模块图标'}
-                , {field: 'ordernum', title: '排序号'}
+                , {field: 'ordernum', title: '排序',width: 60}
                 , {field: 'percode', title: '权限code'}
-                , {field: 'status', title: '状态'}
-                , {field: 'createTime', title: '创建时间', sort: true}
-                , {width: 178, align: 'center', fixed: 'right', toolbar: '#table-toolbar'}
+                , {field: 'status', title: '状态', width: 110, align: 'center', templet: renderStatusTemplate}
+                , {field: 'createTime', title: '创建时间', width: 110, sort: true, templet: renderCreateDate}
+                , {width: 178, align: 'center', fixed: 'right', title: '操作', toolbar: '#table-toolbar'}
             ]]
         });
 
@@ -177,9 +194,9 @@
             layer.open({
                 type: 2
                 , title: '添加模块'
-                , content: '../module/add'
+                , content: '../module/add?pid='+pid
                 , maxmin: true
-                , area: ['1200px', '800px']
+                , area: ['1000px', '500px']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
                         , submitID = 'LAY-user-front-submit'
