@@ -54,6 +54,8 @@
 
 
 <script type="text/html" id="table-toolbar">
+    <a class="layui-btn layui-btn-blue layui-btn-xs" lay-event="managerRight"><i
+            class="layui-icon layui-icon-set-fill"></i>授权</a>
     <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
             class="layui-icon layui-icon-edit"></i>编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i
@@ -70,7 +72,7 @@
         , dtree: '../extends/dtree/dtree'
     }).use(['index', 'table', 'dtree', 'util'], function () {
         var $ = layui.$
-            , form = layui.form
+            , admin = layui.admin
             , table = layui.table
             , util = layui.util
             , dtree = layui.dtree;
@@ -132,7 +134,7 @@
                 , {field: 'percode', title: '权限code'}
                 , {field: 'status', title: '状态', width: 110, align: 'center', templet: renderStatusTemplate}
                 , {field: 'createTime', title: '创建时间', width: 110, sort: true, templet: renderCreateDate}
-                , {width: 178, align: 'center', fixed: 'right', title: '操作', toolbar: '#table-toolbar'}
+                , {width: 238, align: 'center', fixed: 'right', title: '操作', toolbar: '#table-toolbar'}
             ]]
         });
 
@@ -140,7 +142,21 @@
         //事件
         var active = {
             batchdel: function () {
-                del()
+                var checkStatus = table.checkStatus('table-box')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                if (checkData.length === 0) {
+                    return layer.msg('请选择数据');
+                }
+                var ids = [];
+                for (var i = 0; i < checkData.length; i++) {
+                    ids.push(checkData[i].id)
+                }
+                var idsString = ids.join(';');
+                console.log(idsString);
+                layer.confirm('确定删除吗？', function () {
+                    del(idsString)
+                });
             }
             , add: function () {
                 add()
@@ -154,40 +170,33 @@
             if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     obj.del();
+                    del(data.id);
                     layer.close(index);
                 });
             } else if (obj.event === 'edit') {
                 edit(data.id);
+            } else if (obj.event === 'managerRight'){
+                managerRight(data.id)
             }
+
         });
 
         var del = function (id) {
-            var checkStatus = table.checkStatus('batchdel')
-                , checkData = checkStatus.data; //得到选中的数据
-
-            if (checkData.length === 0) {
-                return layer.msg('请选择数据');
-            }
-
-            layer.prompt({
-                formType: 1
-                , title: '敏感操作，请验证口令'
-            }, function (value, index) {
-                layer.close(index);
-
-                layer.confirm('确定删除吗？', function (index) {
-
-                    //执行 Ajax 后重载
-                    /*
-                    admin.req({
-                      url: 'xxx'
-                      //,……
-                    });
-                    */
+            admin.req({
+                url: '../module/delete?id=' + id
+                , type: 'post'
+                , contentType: 'application/json;charset=utf-8'
+                , done: function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
                     table.reload('table-box');
-                    layer.msg('已删除');
-                });
-            })
+                    dtree.reload('left-tree');
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
         };
 
         var add = function () {
@@ -214,13 +223,37 @@
             })
         };
 
+        var managerRight = function (id) {
+            layer.open({
+                type: 2
+                , title: '授权'
+                , content: '../module/right?id='+id
+                , maxmin: true
+                , area: ['1000px', '500px']
+                , yes: function (index, layero) {
+                    var iframeWindow = window['layui-layer-iframe' + index]
+                        , submitID = 'LAY-user-front-submit'
+                        , submit = layero.find('iframe').contents().find('#' + submitID);
+                    //监听提交
+                    iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
+                        var field = data.field; //获取提交的字段
+                        //提交 Ajax 成功后，静态更新表格中的数据
+                        //$.ajax({});
+                        table.reload('LAY-user-front-submit'); //数据刷新
+                        layer.close(index); //关闭弹层
+                    });
+                    submit.trigger('click');
+                }
+            })
+        };
+
         var edit = function (id) {
             layer.open({
                 type: 2
                 , title: '编辑用户'
                 , content: '../module/edit?id=' + id
                 , maxmin: true
-                , area: ['1200px', '800px']
+                , area: ['1000px', '600px']
                 , yes: function (index, layero) {
                     var iframeWindow = window['layui-layer-iframe' + index]
                         , submitID = 'LAY-user-front-submit'

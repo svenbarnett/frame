@@ -55,4 +55,14 @@ public class FrameModuleServiceImpl implements FrameModuleService {
   public FrameModule findByID(int id) {
     return frameModuleDAO.findByID(id);
   }
+
+  @Override
+  public int add(FrameModule frameModule) {
+    return frameModuleDAO.add(frameModule);
+  }
+
+  @Override
+  public void deleteById(int id) {
+    frameModuleDAO.deleteById(id);
+  }
 }

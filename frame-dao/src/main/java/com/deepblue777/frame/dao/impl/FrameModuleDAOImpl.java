@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,13 +26,17 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
 
   @Override
   public List<FrameModule> findAll() {
-    return frameModuleMapper.selectAll();
+    Example example = new Example(FrameModule.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
+    return frameModuleMapper.selectByExample(example);
   }
 
   @Override
   public List<FrameModule> findListByPid(int pid) {
     Example example = new Example(FrameModule.class);
     Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
     criteria.andEqualTo("pid", pid);
     criteria.orEqualTo("id", pid);
     example.orderBy("ordernum").asc();
@@ -43,6 +48,7 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
   public List<FrameModule> findListByPid(int pid, int page, int limit) {
     Example example = new Example(FrameModule.class);
     Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
     criteria.andEqualTo("pid", pid);
     criteria.orEqualTo("id", pid);
     example.orderBy("ordernum").asc();
@@ -55,6 +61,8 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
   @Override
   public List<FrameModule> findList(int page, int limit) {
     Example example = new Example(FrameModule.class);
+    Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
     example.orderBy("ordernum").asc();
     example.orderBy("createTime").asc();
     int start = (page - 1) * limit;
@@ -66,6 +74,7 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
   public int findCountByPid(int pid) {
     Example example = new Example(FrameModule.class);
     Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
     criteria.andEqualTo("pid", pid);
     criteria.orEqualTo("id", pid);
     return frameModuleMapper.selectCountByExample(example);
@@ -75,11 +84,33 @@ public class FrameModuleDAOImpl implements FrameModuleDAO {
   public int findCount() {
     Example example = new Example(FrameModule.class);
     Example.Criteria criteria = example.createCriteria();
+    criteria.andIsNull("deleteTime");
     return frameModuleMapper.selectCountByExample(example);
   }
 
   @Override
   public FrameModule findByID(int id) {
     return frameModuleMapper.selectByPrimaryKey(id);
+  }
+
+  @Override
+  public int add(FrameModule frameModule) {
+    return frameModuleMapper.insertSelective(frameModule);
+  }
+
+  @Override
+  public void deleteById(int id, boolean softdelete) {
+    if (softdelete){
+      FrameModule frameModule = frameModuleMapper.selectByPrimaryKey(id);
+      frameModule.setDeleteTime(new Date());
+      frameModuleMapper.updateByPrimaryKeySelective(frameModule);
+      return;
+    }
+    frameModuleMapper.deleteByPrimaryKey(id);
+  }
+
+  @Override
+  public void deleteById(int id) {
+    deleteById(id,true);
   }
 }

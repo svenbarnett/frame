@@ -26,4 +26,10 @@ public interface FrameModuleDAO {
   int findCount();
 
   FrameModule findByID(int id);
+
+  int add(FrameModule frameModule);
+
+  void deleteById(int id,boolean softdelete);
+
+  void deleteById(int id);
 }

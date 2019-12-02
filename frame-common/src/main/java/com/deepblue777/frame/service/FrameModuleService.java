@@ -19,4 +19,8 @@ public interface FrameModuleService {
 
   TableVO<List<FrameModule>> getTableList(int pid, int page, int limit);
   FrameModule findByID(int id);
+
+  int add(FrameModule frameModule);
+
+  void deleteById(int id);
 }
