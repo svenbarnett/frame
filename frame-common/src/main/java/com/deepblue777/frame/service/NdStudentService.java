@@ -18,7 +18,7 @@ public interface NdStudentService {
 
   int getTablesCount(Map<String, Object> map);
 
-  NdStudent getStudentByID(int id);
+  NdStudent getStudentByID(String id);
 
   NdStudent getStudentByNumber(String number);
 
@@ -26,7 +26,7 @@ public interface NdStudentService {
 
   void update(NdStudent ndStudent);
 
-  void delete(int id);
+  void delete(String id);
 
   List<NdStudent> findAll();
 }

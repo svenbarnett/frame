@@ -2,17 +2,23 @@ package com.deepblue777.frame.action;
 
 import com.alibaba.fastjson.JSON;
 import com.deepblue777.frame.common.BaseResponse;
+import com.deepblue777.frame.dao.FrameAttachinfoDAO;
+import com.deepblue777.frame.domain.FrameAttachinfo;
+import com.deepblue777.frame.domain.NdExamCourse;
 import com.deepblue777.frame.domain.NdExamInfo;
+import com.deepblue777.frame.service.NdExamCourseService;
 import com.deepblue777.frame.service.NdExamInfoService;
+import com.deepblue777.frame.utils.ExcelUtil;
 import com.deepblue777.frame.vo.TableVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 学生考试成绩
@@ -24,6 +30,12 @@ import java.util.Map;
 @RestController()
 @RequestMapping("/nd/examinfo")
 public class NdExamInfoAction {
+
+    @Autowired
+    private NdExamCourseService courseService;
+
+    @Autowired
+    private FrameAttachinfoDAO attachinfoDAO;
 
     @Autowired
     private NdExamInfoService ndExamInfoService;
@@ -42,7 +54,7 @@ public class NdExamInfoAction {
     }
 
     @GetMapping("/edit")
-    public ModelAndView edit(@RequestParam("id") int infoId) {
+    public ModelAndView edit(@RequestParam("id") String infoId) {
         ModelAndView mv = new ModelAndView("nd/examinfo/edit");
         NdExamInfo info = ndExamInfoService.findById(infoId);
         List<Map<String, String>> codes = ndExamInfoService.getSutdentsCode();
@@ -94,7 +106,7 @@ public class NdExamInfoAction {
         String[] split = ids.split(";");
         int count = 0;
         for (int i = 0; i < split.length; i++) {
-            int id = Integer.valueOf(split[i]);
+            String id = split[i];
             ndExamInfoService.delete(id);
             count = count + 1;
         }
@@ -104,7 +116,7 @@ public class NdExamInfoAction {
     @PostMapping("/doedit")
     public String doedit(@RequestBody Map<String, Object> map) {
         NdExamInfo info = new NdExamInfo();
-        info.setId(Integer.valueOf(map.get("id").toString()));
+        info.setId(map.get("id").toString());
         info.setCreateTime(new Date());
         info.setGpa(Float.valueOf(map.get("gpa").toString()));
         info.setStudentName(map.get("number").toString().split(";")[0]);
@@ -116,5 +128,56 @@ public class NdExamInfoAction {
         info.setRank(Integer.valueOf(map.get("rank").toString()));
         ndExamInfoService.update(info);
         return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
+    }
+
+    @PostMapping("/addFromExcel")
+    public String addFromExcel(@RequestParam("attachguid") String attachguid) {
+        FrameAttachinfo attachinfo = attachinfoDAO.findById(attachguid);
+        if (attachinfo == null) {
+            return JSON.toJSONString(new BaseResponse<>(1, "附件不存在！"));
+        }
+
+        List<String> courseNameList = new ArrayList<>(2);
+        new ExcelUtil(attachinfo.getFilepath(), (sheet, row, data) -> {
+            if (row == 0) {
+                // 获取表头
+                for (int i = 9; i < data.length; i++) {
+                    courseNameList.add(String.valueOf(data[i]));
+                }
+            }
+
+
+            if (row >= 1) {
+                NdExamInfo info = new NdExamInfo();
+                info.setId(UUID.randomUUID().toString());
+                info.setCreateTime(new Date());
+                info.setStudentNumber(new BigDecimal(String.valueOf(data[1])).toPlainString());
+                info.setStudentName(String.valueOf(data[2]));
+                info.setYear(String.valueOf(data[3]));
+                info.setTerm("第一学期".equals(data[4].toString()) ? 1 : 2);
+                info.setAllscore(Float.valueOf(data[5].toString()));
+                info.setGetscore(Float.valueOf(data[6].toString()));
+                info.setGpa(Float.valueOf(data[7].toString()));
+                info.setRank((int) Math.floor(Float.valueOf(data[8].toString())));
+                ndExamInfoService.add(info);
+                // 处理课程
+                String reg = ".*[\\[|\\（|\\(|\\【]([0-9]\\d*\\.?\\d*)[\\]|\\）|\\)|\\】]";
+                Pattern r = Pattern.compile(reg);
+                for (int i = 0; i < courseNameList.size(); i++) {
+                    NdExamCourse course = new NdExamCourse();
+                    course.setId(UUID.randomUUID().toString());
+                    course.setExamInfoId(info.getId());
+                    course.setCreateTime(new Date());
+                    Matcher m = r.matcher(courseNameList.get(i));
+                    if (m.find()) {
+                        course.setName(m.group(0));
+                        course.setWeight(Float.valueOf(m.group(1)));
+                    }
+                    course.setScore(String.valueOf(data[9 + i].toString()));
+                    courseService.add(course);
+                }
+            }
+        }).parse();
+        return JSON.toJSONString(new BaseResponse<>(0, "导入数据成功！"));
     }
 }

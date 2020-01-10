@@ -20,6 +20,10 @@
             <div style="padding-bottom: 10px;">
                 <button class="layui-btn layuiadmin-btn-useradmin" data-type="batchdel">删除</button>
                 <button class="layui-btn layuiadmin-btn-useradmin" data-type="add">添加</button>
+                <button type="button" class="layui-btn" id="uploadBtn">
+                    <i class="layui-icon">&#xe67c;</i>导入Excel
+                </button>
+                <span style="float: right;"><a th:href="@{/files/course-demo.xlsx}">下载模板文件</a></span>
             </div>
             <!-- 表格数据区 -->
             <table id="table-box" lay-filter="table-box" lay-data="{id: 'table-box'}"></table>
@@ -47,11 +51,12 @@
         base: '../../statics/admin/' //静态资源所在路径
     }).extend({
         index: 'lib/index' //主入口模块
-    }).use(['index', 'table', 'util'], function () {
+    }).use(['index', 'table', 'util', 'upload'], function () {
         var $ = layui.$
             , admin = layui.admin
             , form = layui.form
             , table = layui.table
+            , upload = layui.upload
             , util = layui.util;
 
 
@@ -82,7 +87,6 @@
             , limit: 20
             , cols: [[ //表头
                 {checkbox: true}
-                , {field: 'id', title: 'ID', width: 60, sort: true}
                 , {field: 'year', title: '学年'}
                 , {width: 60,field: 'term', title: '学期'}
                 , {width: 120,field: 'studentName', title: '姓名'}
@@ -207,6 +211,52 @@
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadBtn' //绑定元素
+            , data: {
+                clientinfo: 'course-excel',
+                clienttag: 'course'
+            }
+            , accept: 'file'
+            , exts: 'xls|xlsx'
+            , url: '../../frame/attach/upload' //上传接口
+            , before: function(obj){
+                layer.load();
+            }
+            , done: function (res) {
+                //上传完毕回调
+                if (res.code) {
+                    layer.msg(res.msg);
+                    return false;
+                }
+                uploadExcel(res.data.id)
+            }
+            , error: function () {
+                //请求异常回调
+                layer.closeAll('loading');
+            }
+        });
+
+        var uploadExcel = function (attachguid) {
+            admin.req({
+                url: '../examinfo/addFromExcel?attachguid=' + attachguid
+                , type: 'post'
+                , contentType: 'application/json;charset=utf-8'
+                , done: function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                    layer.closeAll('loading');
+                    table.reload('table-box');
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        }
+
     });
 </script>
 </html>

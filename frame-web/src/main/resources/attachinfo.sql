@@ -18,4 +18,3 @@ create table `frame_attachinfo`
     primary key (`id`) using btree
 ) engine = innodb
   default charset = utf8mb4 comment ='附件表';
-

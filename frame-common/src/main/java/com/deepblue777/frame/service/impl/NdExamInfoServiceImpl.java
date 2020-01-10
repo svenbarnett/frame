@@ -58,13 +58,13 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
 
     @Transactional(rollbackFor = BusinessException.class)
     @Override
-    public void delete(int id) {
-        ndExamInfoDAO.deleteById(id);
+    public void delete(String id) {
+        ndExamInfoDAO.deleteById(id, false);
         // TODO 需要删除对应的成绩的课程成绩分数
     }
 
     @Override
-    public NdExamInfo findById(int infoId) {
+    public NdExamInfo findById(String infoId) {
         return ndExamInfoDAO.findById(infoId);
     }
 

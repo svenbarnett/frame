@@ -34,7 +34,7 @@ public class NdStudentServiceImpl implements NdStudentService {
   }
 
   @Override
-  public NdStudent getStudentByID(int id) {
+  public NdStudent getStudentByID(String id) {
     return ndStudentDAO.findByID(id);
   }
 
@@ -54,7 +54,7 @@ public class NdStudentServiceImpl implements NdStudentService {
   }
 
   @Override
-  public void delete(int id) {
+  public void delete(String id) {
     ndStudentDAO.delete(id,false);
   }
 

@@ -1,8 +1,13 @@
+
+-- 成绩科目表 --
+drop table if exists `nd_exam_course`;
+drop table if exists `nd_exam_info`;
+drop table if exists `nd_student`;
+
 -- 学生表 --
--- drop table `nd_student`;
 create table `nd_student`
 (
-    `id`          bigint(20)  not null auto_increment primary key comment '主键',
+    `id`          varchar(50)  not null primary key comment '主键',
     `name`        varchar(32) not null comment '学生姓名',
     `year`        varchar(32)  default '' comment '学生年级',
     `major`       varchar(32)  default '' comment '学生专业',
@@ -20,10 +25,11 @@ create table `nd_student`
 ) engine = innodb
   default charset = utf8mb4 comment ='学生表';
 
+
 -- 成绩信息表 --
 create table `nd_exam_info`
 (
-    `id`             bigint(20)  not null auto_increment primary key comment '成绩主键',
+    `id`             varchar(50)  not null primary key comment '成绩主键',
     `year`           varchar(20) not null comment '成绩学年',
     `term`           tinyint(1) comment '学期，1：第一学期，2：第二学期',
     `student_name`   varchar(32) comment '学生姓名',
@@ -35,24 +41,20 @@ create table `nd_exam_info`
     `create_time`    datetime    default current_timestamp comment '创建时间',
     `update_time`    datetime comment '更新时间',
     `delete_time`    datetime comment '删除时间',
-    index create_time_index (create_time desc),
-    foreign key (student_number) references nd_student (number)
+    index create_time_index (create_time desc)
 ) engine = innodb
   default charset = utf8mb4 comment ='学生成绩表';
 
--- 成绩科目表 --
 create table `nd_exam_course`
 (
-    `id`           bigint(20) not null auto_increment primary key comment '成绩科目主键',
-    `exam_info_id` bigint(20) comment '成绩信息表id',
+    `id`           varchar(50) not null primary key comment '成绩科目主键',
+    `exam_info_id` varchar(50) comment '成绩信息表id',
     `name`         varchar(32) comment '科目名称',
     `weight`       float(4, 2) default 0.00 comment '课程学分',
     `score`        varchar(32) comment '课程得分',
     `create_time`  datetime    default current_timestamp comment '创建时间',
     `update_time`  datetime comment '更新时间',
     `delete_time`  datetime comment '删除时间',
-    index create_time_index (create_time desc),
-    foreign key (exam_info_id) references nd_exam_info (id)
+    index create_time_index (create_time desc)
 ) engine = innodb
   default charset = utf8mb4 comment ='学生成绩科目表';
-

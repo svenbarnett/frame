@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * 学生视图控制器
@@ -45,7 +47,7 @@ public class NdStudentAction {
     }
 
     @GetMapping(value = "/edit")
-    public ModelAndView edit(@RequestParam("id") Integer id) {
+    public ModelAndView edit(@RequestParam("id") String id) {
         ModelAndView mv = new ModelAndView("nd/student/edit");
         NdStudent student = ndStudentService.getStudentByID(id);
         mv.addObject("student", student);
@@ -95,7 +97,7 @@ public class NdStudentAction {
         String[] split = ids.split(";");
         int count = 0;
         for (int i = 0; i < split.length; i++) {
-            int id = Integer.valueOf(split[i]);
+            String id = String.valueOf(split[i]);
             ndStudentService.delete(id);
             count = count + 1;
         }
@@ -111,8 +113,9 @@ public class NdStudentAction {
         new ExcelUtil(attachinfo.getFilepath(), (sheet, row, data) -> {
             if (row >= 1) {
                 NdStudent student = new NdStudent();
+                student.setId(UUID.randomUUID().toString());
                 student.setCreateTime(new Date());
-                student.setNumber(String.valueOf(data[1]));
+                student.setNumber(new BigDecimal(String.valueOf(data[1])).toPlainString());
                 student.setName(String.valueOf(data[2]));
                 student.setIdcard(String.valueOf(data[3]));
                 student.setYear(String.valueOf(data[4]));

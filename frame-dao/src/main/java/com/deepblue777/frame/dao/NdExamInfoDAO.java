@@ -44,7 +44,7 @@ public interface NdExamInfoDAO{
      * @param id 成绩主键
      * @return
      */
-    NdExamInfo findById(int id);
+    NdExamInfo findById(String id);
 
     /**
      * 根据examle的条件查询
@@ -56,7 +56,7 @@ public interface NdExamInfoDAO{
 
     void update(NdExamInfo ndExamInfo);
 
-    void deleteById(int id);
+    void deleteById(String id);
 
-    void deleteById(int id, boolean softdelete);
+    void deleteById(String id, boolean softdelete);
 }

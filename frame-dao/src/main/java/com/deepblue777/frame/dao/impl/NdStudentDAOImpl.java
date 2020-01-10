@@ -50,7 +50,7 @@ public class NdStudentDAOImpl extends BaseDAO implements NdStudentDAO {
     }
 
     @Override
-    public NdStudent findByID(int id) {
+    public NdStudent findByID(String id) {
         return ndStudentMapper.selectByPrimaryKey(id);
     }
 
@@ -77,7 +77,7 @@ public class NdStudentDAOImpl extends BaseDAO implements NdStudentDAO {
     }
 
     @Override
-    public void delete(int id, boolean softdelte) {
+    public void delete(String id, boolean softdelte) {
         NdStudent student;
         if (softdelte) {
             student = findByID(id);
@@ -89,7 +89,7 @@ public class NdStudentDAOImpl extends BaseDAO implements NdStudentDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         this.delete(id, true);
     }
 

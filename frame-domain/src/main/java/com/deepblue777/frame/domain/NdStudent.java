@@ -19,8 +19,7 @@ import java.util.Date;
 @Table(name = "nd_student")
 public class NdStudent {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
-  private Integer id;
+  private String id;
   private String name;
   private String year;
   private String major;

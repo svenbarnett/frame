@@ -21,9 +21,8 @@ import java.util.Date;
 public class NdExamCourse {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
-    private Integer id;
-    private Integer examInfoId;
+    private String id;
+    private String examInfoId;
     private String name;
     private Float weight;
     private String score;

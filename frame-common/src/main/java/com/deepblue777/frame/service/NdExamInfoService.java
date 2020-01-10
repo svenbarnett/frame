@@ -22,9 +22,9 @@ public interface NdExamInfoService {
 
     void add(NdExamInfo ndExamInfo);
 
-    void delete(int id);
+    void delete(String id);
 
-    NdExamInfo findById(int infoId);
+    NdExamInfo findById(String infoId);
 
     NdExamInfo findByStudentNumber(String studentNumber,String year,Integer term);
 

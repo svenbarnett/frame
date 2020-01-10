@@ -42,7 +42,7 @@ public interface NdStudentDAO {
    * @param id 学生主键
    * @return 学生信息
    */
-  NdStudent findByID(int id);
+  NdStudent findByID(String id);
 
   /**
    * 根据学生学号查询
@@ -73,14 +73,14 @@ public interface NdStudentDAO {
    * @param id        学生主键
    * @param softdelte 是否软删除 true软删除
    */
-  void delete(int id, boolean softdelte);
+  void delete(String id, boolean softdelte);
 
   /**
    * 根据id主键软删除
    *
    * @param id 学生主键
    */
-  void delete(int id);
+  void delete(String id);
 
 
   /**

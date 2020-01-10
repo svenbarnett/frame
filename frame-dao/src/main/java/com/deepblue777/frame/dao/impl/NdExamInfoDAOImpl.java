@@ -53,7 +53,7 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
     }
 
     @Override
-    public NdExamInfo findById(int id) {
+    public NdExamInfo findById(String id) {
         return ndExamInfoMapper.selectByPrimaryKey(id);
     }
 
@@ -68,13 +68,13 @@ public class NdExamInfoDAOImpl extends BaseDAO implements NdExamInfoDAO {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(String id) {
         deleteById(id,true);
 
     }
 
     @Override
-    public void deleteById(int id, boolean softdelete) {
+    public void deleteById(String id, boolean softdelete) {
         if (softdelete) {
             NdExamInfo info = findById(id);
             info.setDeleteTime(new Date());

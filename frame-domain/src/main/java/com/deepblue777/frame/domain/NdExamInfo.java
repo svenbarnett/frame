@@ -17,8 +17,7 @@ import java.util.Set;
 public class NdExamInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "JDBC")
-    private Integer id;
+    private String id;
     private String year;
     private Integer term;
     private String studentName;
