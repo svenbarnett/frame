@@ -55,7 +55,7 @@ public class NdStudentServiceImpl implements NdStudentService {
 
   @Override
   public void delete(int id) {
-    ndStudentDAO.delete(id);
+    ndStudentDAO.delete(id,false);
   }
 
   @Override

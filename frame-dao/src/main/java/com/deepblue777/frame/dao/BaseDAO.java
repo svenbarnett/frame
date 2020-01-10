@@ -19,7 +19,6 @@ public abstract class BaseDAO{
             Object mapValue = entry.getValue();
             criteria.andEqualTo(mapKey, mapValue);
         }
-        criteria.andIsNull("deleteTime");
         example.orderBy("createTime").asc();
         return example;
     }
