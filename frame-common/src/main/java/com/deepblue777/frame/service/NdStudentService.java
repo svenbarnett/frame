@@ -22,6 +22,8 @@ public interface NdStudentService {
 
   NdStudent getStudentByNumber(String number);
 
+  NdStudent getStudentByIdNumber(String idnumber);
+
   void add(NdStudent ndStudent);
 
   void update(NdStudent ndStudent);

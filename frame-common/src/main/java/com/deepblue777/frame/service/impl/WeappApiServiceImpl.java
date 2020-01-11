@@ -49,8 +49,8 @@ public class WeappApiServiceImpl implements WeappApiService {
     }
 
     @Override
-    public boolean checkStuValid(String name, String number, String idnumber) {
-        NdStudent student = ndStudentService.getStudentByNumber(number);
+    public boolean checkStuValid(String name, String idnumber) {
+        NdStudent student = ndStudentService.getStudentByIdNumber(idnumber);
         if (student == null || !name.equals(student.getName()) || !idnumber.equals(student.getIdcard())){
             return false;
         }
