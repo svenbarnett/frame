@@ -22,9 +22,8 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
-  resources:
-    static-locations: classpath:static/,file:static/
 server:
   servlet:
     context-path: /test
+nasshare: /Users/svenbarnett/Downloads/nasshare/temp/
 

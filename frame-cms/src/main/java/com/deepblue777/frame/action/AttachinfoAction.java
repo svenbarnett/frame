@@ -9,6 +9,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,16 +36,8 @@ public class AttachinfoAction {
 
     private static final Logger log = LoggerFactory.getLogger(AttachinfoAction.class);
 
-
-    private static String BASE_PATH;
-
-    static {
-        try {
-            BASE_PATH = ResourceUtils.getURL("classpath:").getPath() +"static/nasshare/temp/";
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    @Value("${nasshare}")
+    private String NAS_PATH;
 
     @Autowired
     private FrameAttachinfoDAO frameAttachinfoDAO;
@@ -77,7 +70,7 @@ public class AttachinfoAction {
         attachinfo.setClientinfo(clientinfo);
         attachinfo.setClienttag(clienttag);
         String format = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
-        String pathDir = BASE_PATH + format + "/" +attachinfo.getId()+ "/";
+        String pathDir = NAS_PATH + format + "/" +attachinfo.getId()+ "/";
         File pathDirFile = new File(pathDir);
         try {
             if (!pathDirFile.exists()){
