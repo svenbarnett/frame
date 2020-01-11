@@ -42,6 +42,8 @@ public class WeappApiServiceImpl implements WeappApiService {
             resMap.put("gpa",info.getGpa());
             resMap.put("rank",info.getRank());
             resMap.put("courses",info.getCourses());
+            resMap.put("allscore",info.getAllscore());
+            resMap.put("getscore",info.getGetscore());
         }
         return resMap;
     }
