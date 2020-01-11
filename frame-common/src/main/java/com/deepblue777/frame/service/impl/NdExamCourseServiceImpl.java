@@ -39,12 +39,12 @@ public class NdExamCourseServiceImpl implements NdExamCourseService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         ndExamCourseDAO.delete(id);
     }
 
     @Override
-    public NdExamCourse findById(int id) {
+    public NdExamCourse findById(String id) {
         return ndExamCourseDAO.findById(id);
     }
 

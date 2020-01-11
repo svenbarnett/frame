@@ -1,5 +1,6 @@
 package com.deepblue777.frame.service.impl;
 
+import com.deepblue777.frame.dao.NdExamCourseDAO;
 import com.deepblue777.frame.dao.NdExamInfoDAO;
 import com.deepblue777.frame.domain.NdExamInfo;
 import com.deepblue777.frame.domain.NdStudent;
@@ -21,6 +22,10 @@ import java.util.*;
 
 @Service
 public class NdExamInfoServiceImpl implements NdExamInfoService {
+
+    @Autowired
+    private NdExamCourseDAO examCourseDAO;
+
     @Autowired
     private NdExamInfoDAO ndExamInfoDAO;
 
@@ -39,13 +44,13 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
 
     @Override
     public List<Map<String, String>> getSutdentsCode() {
-        List<Map<String,String>> list = new ArrayList<>();
+        List<Map<String, String>> list = new ArrayList<>();
         List<NdStudent> students = studentService.findAll();
         for (int i = 0; i < students.size(); i++) {
-            Map<String,String> map = new HashMap<>(2);
+            Map<String, String> map = new HashMap<>(2);
             NdStudent student = students.get(i);
-            map.put("studentName",student.getName());
-            map.put("studentNumber",student.getNumber());
+            map.put("studentName", student.getName());
+            map.put("studentNumber", student.getNumber());
             list.add(map);
         }
         return list;
@@ -59,8 +64,10 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
     @Transactional(rollbackFor = BusinessException.class)
     @Override
     public void delete(String id) {
+        NdExamInfo info = ndExamInfoDAO.findById(id);
         ndExamInfoDAO.deleteById(id, false);
-        // TODO 需要删除对应的成绩的课程成绩分数
+        // 需要删除对应的成绩的课程成绩分数
+        examCourseDAO.deleteByExaminfoId(info.getId());
     }
 
     @Override
@@ -69,8 +76,8 @@ public class NdExamInfoServiceImpl implements NdExamInfoService {
     }
 
     @Override
-    public NdExamInfo findByStudentNumber(String studentNumber, String year,Integer term) {
-        return ndExamInfoDAO.findByStudentNumber(studentNumber,year,term);
+    public NdExamInfo findByStudentNumber(String studentNumber, String year, Integer term) {
+        return ndExamInfoDAO.findByStudentNumber(studentNumber, year, term);
     }
 
     @Override

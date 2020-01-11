@@ -96,7 +96,7 @@ public class NdExamInfoAction {
         info.setStudentNumber(map.get("number").toString().split(";")[1]);
         info.setAllscore(Float.valueOf(map.get("allscore").toString()));
         info.setGetscore(Float.valueOf(map.get("getscore").toString()));
-        info.setRank(Integer.valueOf(map.get("rank").toString()));
+        info.setRank(String.valueOf(map.get("rank").toString()));
         ndExamInfoService.add(info);
         return JSON.toJSONString(new BaseResponse<>(0, "新增成功！"));
     }
@@ -125,7 +125,7 @@ public class NdExamInfoAction {
         info.setStudentNumber(map.get("number").toString().split(";")[1]);
         info.setAllscore(Float.valueOf(map.get("allscore").toString()));
         info.setGetscore(Float.valueOf(map.get("getscore").toString()));
-        info.setRank(Integer.valueOf(map.get("rank").toString()));
+        info.setRank(String.valueOf(map.get("rank").toString()));
         ndExamInfoService.update(info);
         return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
     }
@@ -158,12 +158,13 @@ public class NdExamInfoAction {
                 info.setAllscore(Float.valueOf(data[5].toString()));
                 info.setGetscore(Float.valueOf(data[6].toString()));
                 info.setGpa(Float.valueOf(data[7].toString()));
-                info.setRank((int) Math.floor(Float.valueOf(data[8].toString())));
+                info.setRank((String.valueOf(data[8].toString())));
                 ndExamInfoService.add(info);
                 // 处理课程
                 String reg = ".*[\\[|\\（|\\(|\\【]([0-9]\\d*\\.?\\d*)[\\]|\\）|\\)|\\】]";
                 Pattern r = Pattern.compile(reg);
                 for (int i = 0; i < courseNameList.size(); i++) {
+
                     NdExamCourse course = new NdExamCourse();
                     course.setId(UUID.randomUUID().toString());
                     course.setExamInfoId(info.getId());
@@ -173,8 +174,16 @@ public class NdExamInfoAction {
                         course.setName(m.group(0));
                         course.setWeight(Float.valueOf(m.group(1)));
                     }
-                    course.setScore(String.valueOf(data[9 + i].toString()));
-                    courseService.add(course);
+
+                    try {
+                        if ("".equals(String.valueOf(data[9 + i].toString()))) {
+                            continue;
+                        }
+                        course.setScore(String.valueOf(data[9 + i].toString()));
+                        courseService.add(course);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }).parse();

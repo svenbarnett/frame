@@ -32,13 +32,14 @@ public class ExcelUtil {
     public void parse() {
         Workbook wb = readExcel(filepath);
         //获取所有sheet
+        int titleLength = 0;
         int sheetNumber = wb.getNumberOfSheets();
         for (int i = 0; i < sheetNumber; i++) {
             Sheet sheet = wb.getSheetAt(i);
             int lastRowNum = sheet.getLastRowNum();
             for (int j = 0; j <= lastRowNum; j++) {
                 Row row = sheet.getRow(j);
-                int colnumNumber = row.getPhysicalNumberOfCells();
+                int colnumNumber = row.getLastCellNum();
                 Object[] data;
                 data = new Object[colnumNumber];
                 if (row == null) {

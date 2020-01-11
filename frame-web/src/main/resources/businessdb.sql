@@ -37,7 +37,7 @@ create table `nd_exam_info`
     `allscore`       float(5, 2) comment '总学分',
     `getscore`       float(5, 2) comment '获得学分',
     `gpa`            float(4, 2) default 0.00 comment '学生绩点',
-    `rank`           int(11) comment '排名',
+    `rank`           varchar(50) default '' comment '排名',
     `create_time`    datetime    default current_timestamp comment '创建时间',
     `update_time`    datetime comment '更新时间',
     `delete_time`    datetime comment '删除时间',
@@ -58,3 +58,6 @@ create table `nd_exam_course`
     index create_time_index (create_time desc)
 ) engine = innodb
   default charset = utf8mb4 comment ='学生成绩科目表';
+
+-- 20200111: 排名需要加入总数，需改字段为字符串类型
+-- alter table nd_exam_info modify `rank` varchar(50) null comment '排名';

@@ -40,10 +40,10 @@ public class NdExamCourseAction {
     }
 
     @GetMapping("/edit")
-    public ModelAndView edit(@RequestParam("id") Integer id) {
+    public ModelAndView edit(@RequestParam("id") String id) {
         ModelAndView mv = new ModelAndView("nd/examcourse/edit");
         NdExamCourse course = ndExamCourseService.findById(id);
-        mv.addObject("course",course);
+        mv.addObject("course", course);
         return mv;
     }
 
@@ -80,17 +80,17 @@ public class NdExamCourseAction {
     }
 
     @PostMapping("doedit")
-    public String doedit(@RequestBody NdExamCourse course){
+    public String doedit(@RequestBody NdExamCourse course) {
         ndExamCourseService.update(course);
         return JSON.toJSONString(new BaseResponse<>(0, "更新成功！"));
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam("id") String ids){
+    public String delete(@RequestParam("id") String ids) {
         String[] split = ids.split(";");
         int count = 0;
         for (int i = 0; i < split.length; i++) {
-            int id = Integer.valueOf(split[i]);
+            String id = split[i];
             ndExamCourseService.delete(id);
             count = count + 1;
         }

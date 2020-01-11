@@ -33,11 +33,13 @@ public interface NdExamCourseDAO {
 
     void add(NdExamCourse course);
 
-    void delete(int id, boolean softdelete);
+    void delete(String id, boolean softdelete);
 
-    void delete(int id);
+    void delete(String id);
 
-    NdExamCourse findById(int id);
+    void deleteByExaminfoId(String infoid);
+
+    NdExamCourse findById(String id);
 
     void update(NdExamCourse course);
 

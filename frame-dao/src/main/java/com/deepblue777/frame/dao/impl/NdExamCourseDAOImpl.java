@@ -3,7 +3,6 @@ package com.deepblue777.frame.dao.impl;
 import com.deepblue777.frame.dao.BaseDAO;
 import com.deepblue777.frame.dao.NdExamCourseDAO;
 import com.deepblue777.frame.domain.NdExamCourse;
-import com.deepblue777.frame.domain.NdExamInfo;
 import com.deepblue777.frame.mapper.NdExamCourseMapper;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
@@ -47,7 +46,7 @@ public class NdExamCourseDAOImpl extends BaseDAO implements NdExamCourseDAO {
     }
 
     @Override
-    public void delete(int id, boolean softdelete) {
+    public void delete(String id, boolean softdelete) {
         if (softdelete) {
             NdExamCourse course = findById(id);
             course.setDeleteTime(new Date());
@@ -58,12 +57,20 @@ public class NdExamCourseDAOImpl extends BaseDAO implements NdExamCourseDAO {
     }
 
     @Override
-    public void delete(int id) {
-        this.delete(id,true);
+    public void delete(String id) {
+        this.delete(id, false);
     }
 
     @Override
-    public NdExamCourse findById(int id) {
+    public void deleteByExaminfoId(String infoid) {
+        Example example = new Example(NdExamCourse.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("examInfoId", infoid);
+        ndExamCourseMapper.deleteByExample(example);
+    }
+
+    @Override
+    public NdExamCourse findById(String id) {
         return ndExamCourseMapper.selectByPrimaryKey(id);
     }
 

@@ -25,7 +25,7 @@ public class NdExamInfo {
     private Float allscore;
     private Float getscore;
     private Float gpa;
-    private Integer rank;
+    private String rank;
     private Date createTime;
     private Date updateTime;
     private Date deleteTime;

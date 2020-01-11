@@ -19,9 +19,9 @@ public interface NdExamCourseService {
 
     void add(NdExamCourse course);
 
-    void delete(int id);
+    void delete(String id);
 
-    NdExamCourse findById(int id);
+    NdExamCourse findById(String id);
 
     void update(NdExamCourse course);
 }
