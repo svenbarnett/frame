@@ -50,6 +50,7 @@ public class NdStudentAction {
     public ModelAndView edit(@RequestParam("id") String id) {
         ModelAndView mv = new ModelAndView("nd/student/edit");
         NdStudent student = ndStudentService.getStudentByID(id);
+        student.setIdcard(null);
         mv.addObject("student", student);
         return mv;
     }
